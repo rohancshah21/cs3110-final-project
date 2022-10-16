@@ -2,5 +2,6 @@
 
 Team Members:
 
-- Rohan C. Shah (rcs353)
 - Cyrus R. Irani (cri23)
+- Gurvir Singh (gs557)
+- Rohan C. Shah (rcs353)
