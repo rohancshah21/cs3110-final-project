@@ -1,0 +1,3 @@
+(library
+ (name character)
+ (libraries yojson ANSITerminal))
