@@ -35,35 +35,6 @@ let welcome_message =
   let x = read_line () in
   make_pet x
 
-(* outputs the list of activity options to the user*)
-let rec user_options t =
-  print_endline "1: Store";
-  print_endline "2: Minigames";
-  print_endline "3: Home";
-  match read_int () with
-  | 1 ->
-      {
-        balance = t.balance;
-        hunger = t.hunger - 1;
-        current_activity = store;
-        name = t.name;
-      }
-  | 2 ->
-      {
-        balance = t.balance;
-        hunger = t.hunger - 1;
-        current_activity = minigames;
-        name = t.name;
-      }
-  | 3 ->
-      {
-        balance = t.balance;
-        hunger = t.hunger - 1;
-        current_activity = home;
-        name = t.name;
-      }
-  | _ -> user_options t
-
 (* outputs the current activity the user is on *)
 let print_current_activity t = t.current_activity
 
@@ -173,3 +144,65 @@ let trivia_minigame t =
     "You get money based on how many of the five questions you get correct! \
      Good luck!";
   choose_difficulty t
+
+let rec choose_minigame t =
+  let x = read_int () in
+  match x with 1 -> trivia_minigame t | _ -> choose_minigame t
+
+let rec choose_store t =
+  let x = read_int () in
+  match x with _ -> failwith "not implemented yet"
+
+let rec choose_home t =
+  let x = read_int () in
+  match x with _ -> failwith "not implemented yet"
+
+let choice_of_minigames t =
+  print_endline
+    "Welcome to the minigame menu!\n\
+     Here are your minigame options:\n\
+     1: Trivia\n\
+     Please choose an option!";
+  choose_minigame t
+
+(* outputs the list of activity options to the user*)
+let rec user_options t =
+  print_endline "1: Store";
+  print_endline "2: Minigames";
+  print_endline "3: Home";
+  match read_int () with
+  | 1 ->
+      let new_t =
+        {
+          balance = t.balance;
+          hunger = t.hunger - 1;
+          current_activity = store;
+          name = t.name;
+        }
+      in
+      choose_store new_t
+  | 2 ->
+      let new_t =
+        {
+          balance = t.balance;
+          hunger = t.hunger - 1;
+          current_activity = minigames;
+          name = t.name;
+        }
+      in
+      choice_of_minigames new_t
+  | 3 ->
+      let new_t =
+        {
+          balance = t.balance;
+          hunger = t.hunger - 1;
+          current_activity = home;
+          name = t.name;
+        }
+      in
+      choose_home new_t
+  | _ -> user_options t
+
+let intro =
+  let pet = welcome_message in
+  user_options pet
