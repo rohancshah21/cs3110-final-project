@@ -11,6 +11,7 @@ type t = {
 let home = { id = "home"; desc = "this is home" }
 let store = { id = "store"; desc = "this the store" }
 let minigames = { id = "minigames"; desc = "this the minigames" }
+let print_state_id_desc s = print_endline (s.id ^ s.desc)
 
 (* makes a new pet with the given name *)
 let make_pet pet_name =
@@ -36,7 +37,9 @@ let welcome_message =
   make_pet x
 
 (* outputs the current activity the user is on *)
-let print_current_activity t = t.current_activity
+let print_current_activity t =
+  let curr_state = t.current_activity in
+  print_state_id_desc curr_state
 
 let easy_trivia_bank =
   [
@@ -83,10 +86,93 @@ let easy_trivia_bank =
   ]
 
 let medium_trivia_bank =
-  [ (0, ("1", "1", "1,2,3,4")); (1, ("1", "1", "1,2,3,4")) ]
+  [
+    ( 0,
+      ( "3",
+        "3: Italy",
+        "Which country is the largest exporter of olive oil?\n\
+         1: China\n\
+         2: Greece\n\
+         3: Italy\n\
+         4: France" ) );
+    ( 1,
+      ( "2",
+        "2: A tight rope",
+        "What does a funambulist walk on?\n\
+         1: Fire\n\
+         2: A tight rope\n\
+         3: Water\n\
+         4: Seashells" ) );
+    ( 2,
+      ( "1",
+        "1: Friendship",
+        "What is the state motto of Texas?\n\
+         1: Friendship\n\
+         2: Excelsior\n\
+         3: Liberty, Justice and Virtue\n\
+         4: Commerce" ) );
+    ( 3,
+      ( "2",
+        "2: Topeka",
+        "What is the capital city of Kansas?\n\
+         1: Little Rock\n\
+         2: Topeka\n\
+         3: Montgomery\n\
+         4: Baton Rouge" ) );
+    ( 4,
+      ( "2",
+        "2: Wyoming",
+        "Which state has the lowest cumulative population?\n\
+         1: Alaska\n\
+         2: Wyoming\n\
+         3: Vermont\n\
+         4: North Dakota" ) );
+  ]
 
 let hard_trivia_bank =
-  [ (0, ("1", "1", "1,2,3,4")); (1, ("1", "1", "1,2,3,4")) ]
+  [
+    ( 0,
+      ( "3",
+        "3: 84lbs",
+        "Someone weighing 220lbs on Earth would weigh about how much on Mars?\n\
+         1: 250lb\n\
+         2: 100lbs\n\
+         3: 84lbs\n\
+         4: 200lbs" ) );
+    ( 1,
+      ( "1",
+        "1: Jupiter, Saturn, Uranus, and Neptune",
+        "What are the four planets that are known as 'Gas Giants?'\n\
+         1: Jupiter, Saturn, Uranus, and Neptune\n\
+         2: Mars, Venus, Uranus, and Saturn\n\
+         3: Mercury, Jupiter, Mars, Uranus\n\
+         4: Earth, Mars, Jupiter, Saturn" ) );
+    ( 2,
+      ( "4",
+        "4: 99.86%",
+        "The Sun's mass takes up how much of the solar system?\n\
+         1: 40.67%\n\
+         2: 90.23%\n\
+         3: 70.89%\n\
+         4: 99.86%" ) );
+    ( 3,
+      ( "2",
+        "2: Kite flying",
+        "What favorite past-time activity in the United States is considered a \
+         professional sport in Thailand?\n\
+         1: Fishing\n\
+         2: Kite flying\n\
+         3: Frisbee\n\
+         4: Bird watching" ) );
+    ( 4,
+      ( "3",
+        "3: Japan",
+        "What country has the world's largest bowling alley?\n\
+         1: United States\n\
+         2: England\n\
+         3: Japan\n\
+         4: France" ) );
+  ]
 
 let rec lookup k difficulty =
   match difficulty with
@@ -149,13 +235,15 @@ let rec choose_minigame t =
   let x = read_int () in
   match x with 1 -> trivia_minigame t | _ -> choose_minigame t
 
-let rec choose_store t =
+let choose_store t =
   let x = read_int () in
-  match x with _ -> failwith "not implemented yet"
+  let y = (t, x) in
+  match y with _ -> failwith "not implemented yet"
 
-let rec choose_home t =
+let choose_home t =
   let x = read_int () in
-  match x with _ -> failwith "not implemented yet"
+  let y = (t, x) in
+  match y with _ -> failwith "not implemented yet"
 
 let choice_of_minigames t =
   print_endline
@@ -202,7 +290,3 @@ let rec user_options t =
       in
       choose_home new_t
   | _ -> user_options t
-
-let intro =
-  let pet = welcome_message in
-  user_options pet

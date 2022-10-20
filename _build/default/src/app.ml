@@ -1,5 +1,3 @@
-open Character
-
 let intro =
-  let pet = welcome_message in
-  pet
+  let pet = Character.welcome_message in
+  Character.user_options pet

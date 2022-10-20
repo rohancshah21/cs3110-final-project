@@ -11,6 +11,7 @@ type t = {
 let home = { id = "home"; desc = "this is home" }
 let store = { id = "store"; desc = "this the store" }
 let minigames = { id = "minigames"; desc = "this the minigames" }
+let print_state_id_desc s = print_endline (s.id ^ s.desc)
 
 (* makes a new pet with the given name *)
 let make_pet pet_name =
@@ -36,7 +37,9 @@ let welcome_message =
   make_pet x
 
 (* outputs the current activity the user is on *)
-let print_current_activity t = t.current_activity
+let print_current_activity t =
+  let curr_state = t.current_activity in
+  print_state_id_desc curr_state
 
 let easy_trivia_bank =
   [
@@ -149,13 +152,15 @@ let rec choose_minigame t =
   let x = read_int () in
   match x with 1 -> trivia_minigame t | _ -> choose_minigame t
 
-let rec choose_store t =
+let choose_store t =
   let x = read_int () in
-  match x with _ -> failwith "not implemented yet"
+  let y = (t, x) in
+  match y with _ -> failwith "not implemented yet"
 
-let rec choose_home t =
+let choose_home t =
   let x = read_int () in
-  match x with _ -> failwith "not implemented yet"
+  let y = (t, x) in
+  match y with _ -> failwith "not implemented yet"
 
 let choice_of_minigames t =
   print_endline
@@ -190,7 +195,7 @@ let rec user_options t =
           name = t.name;
         }
       in
-      choose_minigame new_t
+      choice_of_minigames new_t
   | 3 ->
       let new_t =
         {
