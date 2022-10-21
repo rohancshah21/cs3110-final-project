@@ -11,3 +11,5 @@ val print_pet : t -> unit
 
 val welcome_message : t
 (** [make_pet a] makes a new pet [a]. *)
+
+val intro : int

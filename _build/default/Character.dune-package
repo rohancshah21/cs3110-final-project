@@ -1,0 +1,34 @@
+(lang dune 3.4)
+(name Character)
+(sections (lib .) (libexec .) (doc ../../doc/Character))
+(files
+ (lib
+  (META
+   character.a
+   character.cma
+   character.cmi
+   character.cmt
+   character.cmti
+   character.cmx
+   character.cmxa
+   character.ml
+   character.mli
+   dune-package
+   opam))
+ (libexec (character.cmxs))
+ (doc (README.md)))
+(library
+ (name Character)
+ (kind normal)
+ (archives (byte character.cma) (native character.cmxa))
+ (plugins (byte character.cma) (native character.cmxs))
+ (native_archives character.a)
+ (main_module_name Character)
+ (modes byte native)
+ (modules
+  (singleton
+   (name Character)
+   (obj_name character)
+   (visibility public)
+   (impl)
+   (intf))))

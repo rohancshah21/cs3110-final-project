@@ -39,7 +39,16 @@ let welcome_message =
 (* outputs the current activity the user is on *)
 let print_current_activity t =
   let curr_state = t.current_activity in
-  print_state_id_desc curr_state
+  let () = print_state_id_desc curr_state in
+  5
+
+let cyrus =
+  if
+    print_current_activity
+      { balance = 0; hunger = 0; current_activity = minigames; name = "hey" }
+    = 5
+  then "1"
+  else "0"
 
 let easy_trivia_bank =
   [
@@ -290,3 +299,8 @@ let rec user_options t =
       in
       choose_home new_t
   | _ -> user_options t
+
+let intro =
+  print_endline cyrus;
+  let pet = welcome_message in
+  user_options pet

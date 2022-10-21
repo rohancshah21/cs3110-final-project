@@ -1,12 +1,10 @@
 open OUnit2
-open Character
+(* open Character *)
 
 let character_tests =
-  [
-    ( "current game" >:: fun _ ->
-      assert_equal 3 (current_game { balance = 0; currgame = 2; prevgames = 4 })
-    );
-  ]
+  [ (* ( "current game" >:: fun _ ->
+         assert_equal 3 (current_game { balance = 0; currgame = 2; prevgames = 4 })
+       ); *) ]
 
 let command_tests = []
 let state_tests = []

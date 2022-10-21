@@ -1,2 +1,0 @@
-(** @canonical Character.App *)
-module App = Character__App
