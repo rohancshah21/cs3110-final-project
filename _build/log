@@ -3,7 +3,7 @@
 # Shared cache: disabled
 # Workspace root: /Users/cyrus/3110/cs3110-final-project
 # Auto-detected concurrency: 12
-$ /Users/cyrus/.opam/cs3110-2022fa/bin/ocamlc.opt -config > /var/folders/d7/k5mn0fnx32bg18z6jg0pk72w0000gp/T/dune_dcb367_output
+$ /Users/cyrus/.opam/cs3110-2022fa/bin/ocamlc.opt -config > /var/folders/d7/k5mn0fnx32bg18z6jg0pk72w0000gp/T/dune_e1c99f_output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -114,3 +114,6 @@ $ /Users/cyrus/.opam/cs3110-2022fa/bin/ocamlc.opt -config > /var/folders/d7/k5mn
 #      ; windows_unicode = false
 #      }
 #  }
+$ (cd _build/default && /Users/cyrus/.opam/cs3110-2022fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.character.objs/byte -I src/.character.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.character.objs/native/character.cmx -c -impl src/character.ml)
+$ (cd _build/default && /Users/cyrus/.opam/cs3110-2022fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/character.cmxa src/.character.objs/native/character.cmx)
+$ (cd _build/default && /Users/cyrus/.opam/cs3110-2022fa/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o bin/main.exe src/character.cmxa bin/.main.eobjs/native/dune__exe__Main.cmx)

@@ -1,21 +1,13 @@
-type state = { id : string; desc : string }
-
 type t = {
   balance : int; (* current balance *)
   hunger : int; (* current hunger level *)
-  current_activity : state; (* current activity *)
   name : string;
 }
 
 (* this is the home locations *)
-let home = { id = "home"; desc = "this is home" }
-let store = { id = "store"; desc = "this the store" }
-let minigames = { id = "minigames"; desc = "this the minigames" }
-let print_state_id_desc s = print_endline (s.id ^ s.desc)
 
 (* makes a new pet with the given name *)
-let make_pet pet_name =
-  { balance = 0; hunger = 5; current_activity = home; name = pet_name }
+let make_pet pet_name = { balance = 0; hunger = 5; name = pet_name }
 
 (* prints all of the characteristics of the pet *)
 let print_pet t =
@@ -35,20 +27,6 @@ let welcome_message =
    ^ "Let's start by naming your pet. What would you like to name your pet?");
   let x = read_line () in
   make_pet x
-
-(* outputs the current activity the user is on *)
-let print_current_activity t =
-  let curr_state = t.current_activity in
-  let () = print_state_id_desc curr_state in
-  5
-
-let cyrus =
-  if
-    print_current_activity
-      { balance = 0; hunger = 0; current_activity = minigames; name = "hey" }
-    = 5
-  then "1"
-  else "0"
 
 let easy_trivia_bank =
   [
@@ -264,43 +242,32 @@ let choice_of_minigames t =
 
 (* outputs the list of activity options to the user*)
 let rec user_options t =
+  print_endline
+    ("Hello " ^ t.name
+   ^ "'s Owner! This is the main menu.  From here you can go to the store to \n\
+     \ buy food, play minigames to win money, and go home to feed " ^ t.name
+   ^ "big stomach!\nPlease choose one of the following options:");
   print_endline "1: Store";
   print_endline "2: Minigames";
   print_endline "3: Home";
   match read_int () with
   | 1 ->
       let new_t =
-        {
-          balance = t.balance;
-          hunger = t.hunger - 1;
-          current_activity = store;
-          name = t.name;
-        }
+        { balance = t.balance; hunger = t.hunger - 1; name = t.name }
       in
       choose_store new_t
   | 2 ->
       let new_t =
-        {
-          balance = t.balance;
-          hunger = t.hunger - 1;
-          current_activity = minigames;
-          name = t.name;
-        }
+        { balance = t.balance; hunger = t.hunger - 1; name = t.name }
       in
       choice_of_minigames new_t
   | 3 ->
       let new_t =
-        {
-          balance = t.balance;
-          hunger = t.hunger - 1;
-          current_activity = home;
-          name = t.name;
-        }
+        { balance = t.balance; hunger = t.hunger - 1; name = t.name }
       in
       choose_home new_t
   | _ -> user_options t
 
 let intro =
-  print_endline cyrus;
   let pet = welcome_message in
   user_options pet
