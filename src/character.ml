@@ -12,7 +12,7 @@ let make_pet pet_name = { balance = 0; hunger = 5; name = pet_name }
 (* prints all of the characteristics of the pet *)
 let print_pet t =
   print_endline ("Current State of " ^ t.name);
-  print_endline ("Balance: " ^ string_of_int t.balance);
+  print_endline ("Balance: $" ^ string_of_int t.balance);
   print_endline ("Hunger: " ^ string_of_int t.hunger)
 
 (* the first message the user sees when they open the game *)
