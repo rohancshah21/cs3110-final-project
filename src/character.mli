@@ -1,7 +1,7 @@
 type t
 (** The abstract type of values representing Game Dev Character. *)
 
-val user_options : t -> int
+val user_options : t -> t
 
 val make_pet : string -> t
 (** [make_pet a] makes a new pet [a]. *)
@@ -12,4 +12,4 @@ val print_pet : t -> unit
 val welcome_message : t
 (** [make_pet a] makes a new pet [a]. *)
 
-val intro : int
+val intro : unit

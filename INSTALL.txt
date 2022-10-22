@@ -1,0 +1,5 @@
+Installation Instructions
+1) Download the zip file
+2) Extract tamagotchi.zip to a directory
+3) from this directory, run make build
+4) Finally, run make play and follow the instructions on the screen
