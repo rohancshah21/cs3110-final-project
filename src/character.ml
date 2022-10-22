@@ -206,9 +206,15 @@ let rec choose_difficulty t =
   print_endline "Choose Difficulty:\n1:Easy\n2:Medium\n3:Hard";
   let x = read_int () in
   match x with
-  | 1 -> lookup_five_questions easy_trivia_bank
-  | 2 -> lookup_five_questions medium_trivia_bank
-  | 3 -> lookup_five_questions hard_trivia_bank
+  | 1 ->
+      let bonus = lookup_five_questions easy_trivia_bank in
+      { balance = t.balance + bonus; hunger = t.hunger; name = t.name }
+  | 2 ->
+      let bonus = lookup_five_questions medium_trivia_bank * 2 in
+      { balance = t.balance + bonus; hunger = t.hunger; name = t.name }
+  | 3 ->
+      let bonus = lookup_five_questions hard_trivia_bank * 3 in
+      { balance = t.balance + bonus; hunger = t.hunger; name = t.name }
   | _ -> choose_difficulty t
 
 let trivia_minigame t =
@@ -270,4 +276,5 @@ let rec user_options t =
 
 let intro =
   let pet = welcome_message in
-  user_options pet
+  let new_t = user_options pet in
+  print_pet new_t
