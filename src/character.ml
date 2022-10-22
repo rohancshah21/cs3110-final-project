@@ -199,11 +199,22 @@ let lookup_five_questions difficulty =
       let amt3 = lookup_one_question h3 difficulty "3" + amt2 in
       let amt4 = lookup_one_question h4 difficulty "4" + amt3 in
       let amt5 = lookup_one_question h5 difficulty "5" + amt4 in
+      print_endline ("You got " ^ string_of_int amt5 ^ "/5 questions right!");
+      let word =
+        if difficulty = easy_trivia_bank then amt5
+        else if difficulty = medium_trivia_bank then amt5 * 2
+        else amt5 * 3
+      in
+      print_endline ("Congrats! You earned $" ^ string_of_int word ^ "!");
       amt5
   | _ -> failwith "oops!"
 
 let rec choose_difficulty t =
-  print_endline "Choose Difficulty:\n1:Easy\n2:Medium\n3:Hard";
+  print_endline
+    "Choose Difficulty:\n\
+     1:Easy (1x Multiplier)\n\
+     2:Medium (2x Multiplier)\n\
+     3:Hard (3x Multiplier)";
   let x = read_int () in
   match x with
   | 1 ->
