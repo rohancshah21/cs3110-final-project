@@ -11,13 +11,19 @@ type t = {
 let make_pet pet_name =
   { balance = 0; hunger = 3; name = pet_name; inventory = [] }
 
+let get_max_hunger =
+  let p = make_pet "" in
+  p.hunger
+
 let string_of_inventory sl = String.concat ", " sl
 
 (* prints all of the characteristics of the pet *)
 let print_stats t =
   print_endline
     (t.name ^ "'s Stats: Balance = $" ^ string_of_int t.balance ^ "; Hunger = "
-   ^ string_of_int t.hunger ^ "/5" ^ " Inventory = ["
+   ^ string_of_int t.hunger ^ "/"
+    ^ string_of_int get_max_hunger
+    ^ " Inventory = ["
     ^ string_of_inventory t.inventory
     ^ "]")
 
@@ -145,10 +151,13 @@ let rec choose_minigame t =
   print_endline
     "Welcome to the minigame menu!\n\
      Here are your minigame options:\n\
+     0: Main Menu\n\
      1: Trivia\n\
      Please choose an option!";
-  let x = read_int () in
-  match x with 1 -> trivia_minigame t | _ -> choose_minigame t
+  try
+    let x = read_int () in
+    match x with 0 -> t | 1 -> trivia_minigame t | _ -> choose_minigame t
+  with _ -> choose_minigame t
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
 let food_bank_find_cost = [ (1, (1, "Biscuit x1")) ]
@@ -244,31 +253,42 @@ let rec get_food_in_inventory idx (inv : string list) acc =
   | [] -> raise (NoSuchItem "There is no item at this index!")
   | h :: t -> if idx = acc then h else get_food_in_inventory idx t (acc + 1)
 
-let rec refill_hunger item inventory =
+let rec deplete_food item inventory =
   match inventory with
   | [] -> []
   | h :: t ->
-      if item = String.sub h 0 (String.length item - 3) then
+      if item = String.sub h 0 (String.length item) then
         let number =
           string_of_int
             (int_of_string (Char.escaped (String.get h (String.length h - 1)))
             - 1)
         in
-        if number = "0" then refill_hunger item t
+        if number = "0" then deplete_food item t
         else
           let new_word = String.sub h 0 (String.length h - 1) ^ number in
-          new_word :: refill_hunger item t
-      else refill_hunger item t
+          new_word :: deplete_food item t
+      else deplete_food item t
 
-(* let deplete_food  =
+let refill_hunger amt t =
+  let new_hunger = t.hunger + amt in
+  if new_hunger >= get_max_hunger then get_max_hunger else new_hunger
 
-   let refill_hunger_deplete_food = *)
 let feed_item idx t =
   let item = get_food_in_inventory idx t.inventory 1 in
   let refill_amt =
     get_hunger_value (String.sub item 0 (String.length item - 3)) food_dict
   in
-  refill_hunger (String.sub item 0 (String.length item - 3)) t.inventory
+  let new_hunger = refill_hunger refill_amt t in
+  let new_inv =
+    deplete_food (String.sub item 0 (String.length item - 3)) t.inventory
+  in
+
+  {
+    balance = t.balance;
+    hunger = new_hunger;
+    name = t.name;
+    inventory = new_inv;
+  }
 
 let rec home_item t =
   print_endline
@@ -283,13 +303,9 @@ let rec home_item t =
   | 0 -> t
   | i -> (
       try
-        let refill_hunger = feed_item i t in
-        {
-          balance = t.balance;
-          hunger = t.hunger + refill_hunger;
-          name = t.name;
-          inventory = t.inventory;
-        }
+        let eat = feed_item i t in
+        print_endline "\n*gulps* YUMMM!";
+        eat
       with NoSuchItem s ->
         print_endline s;
         home_item t)
@@ -302,7 +318,7 @@ let rec choose_home_activity t =
   let x = read_int () in
   match x with 1 -> home_item t | _ -> choose_home_activity t
 
-let choose_home t =
+let rec choose_home t =
   print_endline "\n";
   print_stats t;
   print_endline
@@ -310,9 +326,9 @@ let choose_home t =
      Here are your store options:\n\
      1: Feed\n\
      Please choose an option!";
-  choose_home_activity t
+  try choose_home_activity t with _ -> choose_home t
 
-let choice_of_store_item t =
+let rec choice_of_store_item t =
   print_endline "\n";
   print_stats t;
   print_endline
@@ -320,7 +336,7 @@ let choice_of_store_item t =
      Here are your store options:\n\
      1: Food\n\
      Please choose an option!";
-  choose_store t
+  try choose_store t with _ -> choice_of_store_item t
 
 (* |||||||||||||||||||||||||||||OPTIONS|||||||||||||||||||||||||||||||||||||||||*)
 let rec user_options t =
