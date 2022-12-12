@@ -24,8 +24,8 @@ finalcheck:
 	@bash check.sh final
 
 zip:
-	rm -f adventure.zip
-	zip -r adventure.zip . -x@exclude.lst
+	rm -f tamagotchi.zip
+	zip -r tamagotchi.zip . 
 
 clean:
 	dune clean

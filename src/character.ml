@@ -4,18 +4,22 @@ type t = {
   balance : int; (* current balance *)
   hunger : int; (* current hunger level *)
   name : string;
+  inventory : string list;
 }
 
-(* this is the home locations *)
-
 (* makes a new pet with the given name *)
-let make_pet pet_name = { balance = 0; hunger = 5; name = pet_name }
+let make_pet pet_name =
+  { balance = 0; hunger = 5; name = pet_name; inventory = [] }
+
+let string_of_inventory sl = String.concat ", " sl
 
 (* prints all of the characteristics of the pet *)
 let print_stats t =
   print_endline
     (t.name ^ "'s Stats: Balance = $" ^ string_of_int t.balance ^ "; Hunger = "
-   ^ string_of_int t.hunger ^ "/5")
+   ^ string_of_int t.hunger ^ "/5" ^ " Inventory = ["
+    ^ string_of_inventory t.inventory
+    ^ "]")
 
 (* the first message the user sees when they open the game *)
 let welcome_message =
@@ -33,11 +37,18 @@ let welcome_message =
 
 (* the death message *)
 
-(* let death_message t =
-     print_endline
-       ("GAME OVER: " ^ t.name ^ "has unfortunately died from starvation :(")
+exception GameOver of string
 
-   let check_death t = if t.hunger <= 0 then death_message else ignore *)
+let death_exn t =
+  GameOver
+    ("=====================================================================\n\
+     \       \n\
+     \ GAME OVER: " ^ t.name
+   ^ " has unfortunately died from starvation :( \n\
+     \ \n\
+     \ =====================================================================")
+
+(* let check_death t : bool = if t.hunger <= 0 then raise (death_exn t) else false *)
 
 let rec lookup k difficulty =
   match difficulty with
@@ -97,13 +108,28 @@ let rec choose_difficulty t =
   match x with
   | 1 ->
       let bonus = lookup_five_questions easy_trivia_bank in
-      { balance = t.balance + bonus; hunger = t.hunger - 1; name = t.name }
+      {
+        balance = t.balance + bonus;
+        hunger = t.hunger - 1;
+        name = t.name;
+        inventory = t.inventory;
+      }
   | 2 ->
       let bonus = lookup_five_questions medium_trivia_bank * 2 in
-      { balance = t.balance + bonus; hunger = t.hunger - 1; name = t.name }
+      {
+        balance = t.balance + bonus;
+        hunger = t.hunger - 1;
+        name = t.name;
+        inventory = t.inventory;
+      }
   | 3 ->
       let bonus = lookup_five_questions hard_trivia_bank * 3 in
-      { balance = t.balance + bonus; hunger = t.hunger - 1; name = t.name }
+      {
+        balance = t.balance + bonus;
+        hunger = t.hunger - 1;
+        name = t.name;
+        inventory = t.inventory;
+      }
   | _ -> choose_difficulty t
 
 let trivia_minigame t =
@@ -125,12 +151,40 @@ let rec choose_minigame t =
   match x with 1 -> trivia_minigame t | _ -> choose_minigame t
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
-let food_bank = [ (1, 1) ]
+let food_bank_find_cost = [ (1, (1, "Biscuit x1")) ]
 
 let lookup_store k bank =
   match bank with
   | [] -> failwith "Oops!"
   | (k', v) :: t -> if k = k' then v else lookup k t
+
+exception ItemLimit of string
+
+let rec add_item_to_inventory (i : string) (lst : string list) : string list =
+  match lst with
+  | [] -> []
+  | h :: t ->
+      if
+        String.sub h 0 (String.length i - 3)
+        = String.sub i 0 (String.length i - 3)
+      then
+        let get_new_amt =
+          string_of_int
+            (int_of_string (Char.escaped (String.get h (String.length h - 1)))
+            + 1)
+        in
+        if get_new_amt = "10" then raise (ItemLimit "\n YOU ARE AT ITEM LIMIT")
+        else
+          let new_word = String.sub h 0 (String.length h - 1) ^ get_new_amt in
+          new_word :: add_item_to_inventory i t
+      else h :: add_item_to_inventory i t
+
+let if_not_in_inventory i lst =
+  if
+    lst
+    = try add_item_to_inventory i lst with ItemLimit s -> raise (ItemLimit s)
+  then i :: lst
+  else add_item_to_inventory i lst
 
 let rec food_item t =
   print_stats t;
@@ -142,14 +196,30 @@ let rec food_item t =
      Please choose an option!";
   let x = read_int () in
   match x with
+  | 0 -> t
   | 1 ->
-      let y = lookup_store 1 food_bank in
-      let new_bal = t.balance - y in
-      if new_bal < 0 then
+      let y = lookup_store 1 food_bank_find_cost in
+      let new_bal = ref (t.balance - fst y) in
+      let new_inv =
+        try if_not_in_inventory (snd y) t.inventory
+        with ItemLimit s ->
+          new_bal := t.balance;
+          print_endline s;
+          t.inventory
+      in
+
+      if !new_bal < 0 then
         let _ = print_endline "CANNOT AFFORD" in
         food_item t
       else
-        let new_t = { balance = new_bal; hunger = t.hunger; name = t.name } in
+        let new_t =
+          {
+            balance = !new_bal;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = new_inv;
+          }
+        in
         new_t
   | _ -> food_item t
 
@@ -186,24 +256,45 @@ let rec user_options t =
   print_endline "3: Home";
   match read_int_opt () with
   | Some 1 ->
-      let new_t = { balance = t.balance; hunger = t.hunger; name = t.name } in
+      let new_t =
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      in
       choice_of_store_item new_t
   | Some 2 ->
-      let new_t = { balance = t.balance; hunger = t.hunger; name = t.name } in
+      if t.hunger = 0 then raise (death_exn t);
+      let new_t =
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      in
       let z = choose_minigame new_t in
       user_options z
   | Some 3 ->
-      let new_t = { balance = t.balance; hunger = t.hunger; name = t.name } in
+      let new_t =
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      in
       choose_home new_t
   | _ -> user_options t
 
 (* |||||||||||||||||||||||||||||START GAME|||||||||||||||||||||||||||||||||||||||||*)
 
-let game_loop pet =
+let rec game_loop pet =
   let new_t = user_options pet in
-  if new_t.hunger = 0 then print_endline "YOU LOST!"
-  else print_endline "YOU WON!"
+  if new_t.hunger = 0 then print_endline "YOU LOST!" else game_loop new_t
 
 let intro =
   let pet = welcome_message in
-  game_loop pet
+  try game_loop pet with GameOver s -> print_endline s

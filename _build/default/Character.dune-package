@@ -1,0 +1,61 @@
+(lang dune 3.4)
+(name Character)
+(sections (lib .) (libexec .) (doc ../../doc/Character))
+(files
+ (lib
+  (META
+   character.a
+   character.cma
+   character.cmi
+   character.cmt
+   character.cmti
+   character.cmx
+   character.cmxa
+   character.ml
+   character.mli
+   character__.cmi
+   character__.cmt
+   character__.cmx
+   character__.ml
+   character__Hangman.cmi
+   character__Hangman.cmt
+   character__Hangman.cmx
+   character__Infobanks.cmi
+   character__Infobanks.cmt
+   character__Infobanks.cmx
+   character__Store.cmi
+   character__Store.cmt
+   character__Store.cmx
+   dune-package
+   hangman.ml
+   infobanks.ml
+   opam
+   store.ml))
+ (libexec (character.cmxs))
+ (doc (README.md)))
+(library
+ (name Character)
+ (kind normal)
+ (archives (byte character.cma) (native character.cmxa))
+ (plugins (byte character.cma) (native character.cmxs))
+ (native_archives character.a)
+ (main_module_name Character)
+ (modes byte native)
+ (modules
+  (wrapped
+   (main_module_name Character)
+   (modules
+    ((name Character) (obj_name character) (visibility public) (impl) (intf))
+    ((name Hangman) (obj_name character__Hangman) (visibility public) (impl))
+    ((name Infobanks)
+     (obj_name character__Infobanks)
+     (visibility public)
+     (impl))
+    ((name Store) (obj_name character__Store) (visibility public) (impl)))
+   (alias_module
+    (name Character__)
+    (obj_name character__)
+    (visibility public)
+    (kind alias)
+    (impl))
+   (wrapped true))))
