@@ -9,7 +9,7 @@ type t = {
 
 (* makes a new pet with the given name *)
 let make_pet pet_name =
-  { balance = 0; hunger = 5; name = pet_name; inventory = [] }
+  { balance = 0; hunger = 3; name = pet_name; inventory = [] }
 
 let string_of_inventory sl = String.concat ", " sl
 
@@ -223,14 +223,94 @@ let rec food_item t =
         new_t
   | _ -> food_item t
 
+let rec enumerate_inventory (inv : string list) (acc : int) =
+  match inv with
+  | [] -> []
+  | h :: t -> (string_of_int acc ^ ": " ^ h) :: enumerate_inventory t (acc + 1)
+
+exception NoSuchItem of string
+
+let food_dict = [ ("Biscuit", 1) ]
+
+(*gets the amt of food that is supposed to replenish*)
+let rec get_hunger_value item lst =
+  match lst with
+  | [] -> raise (NoSuchItem "NOT SUPPOSED TO HAPPEN")
+  | (a, b) :: t -> if item = a then b else get_hunger_value item t
+
+(*gets food at the index the user put in*)
+let rec get_food_in_inventory idx (inv : string list) acc =
+  match inv with
+  | [] -> raise (NoSuchItem "There is no item at this index!")
+  | h :: t -> if idx = acc then h else get_food_in_inventory idx t (acc + 1)
+
+let rec refill_hunger item inventory =
+  match inventory with
+  | [] -> []
+  | h :: t ->
+      if item = String.sub h 0 (String.length item - 3) then
+        let number =
+          string_of_int
+            (int_of_string (Char.escaped (String.get h (String.length h - 1)))
+            - 1)
+        in
+        if number = "0" then refill_hunger item t
+        else
+          let new_word = String.sub h 0 (String.length h - 1) ^ number in
+          new_word :: refill_hunger item t
+      else refill_hunger item t
+
+(* let deplete_food  =
+
+   let refill_hunger_deplete_food = *)
+let feed_item idx t =
+  let item = get_food_in_inventory idx t.inventory 1 in
+  let refill_amt =
+    get_hunger_value (String.sub item 0 (String.length item - 3)) food_dict
+  in
+  refill_hunger (String.sub item 0 (String.length item - 3)) t.inventory
+
+let rec home_item t =
+  print_endline
+    ("Welcome to the Dining Room! Here you can feed " ^ t.name
+   ^ "!\nHere is your inventory: ["
+    ^ string_of_inventory t.inventory
+    ^ "] \n"
+    ^ String.concat "\n" (enumerate_inventory t.inventory 1)
+    ^ "\n0: Main Menu \nPlease choose an option!");
+  let x = read_int () in
+  match x with
+  | 0 -> t
+  | i -> (
+      try
+        let refill_hunger = feed_item i t in
+        {
+          balance = t.balance;
+          hunger = t.hunger + refill_hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      with NoSuchItem s ->
+        print_endline s;
+        home_item t)
+
 let rec choose_store t =
   let x = read_int () in
   match x with 1 -> food_item t | _ -> choose_store t
 
-let choose_home t =
+let rec choose_home_activity t =
   let x = read_int () in
-  let y = (t, x) in
-  match y with _ -> failwith "not implemented yet"
+  match x with 1 -> home_item t | _ -> choose_home_activity t
+
+let choose_home t =
+  print_endline "\n";
+  print_stats t;
+  print_endline
+    "Welcome to the home menu!\n\
+     Here are your store options:\n\
+     1: Feed\n\
+     Please choose an option!";
+  choose_home_activity t
 
 let choice_of_store_item t =
   print_endline "\n";

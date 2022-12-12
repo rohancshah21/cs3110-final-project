@@ -1,6 +1,2 @@
 (** @canonical Character.Infobanks *)
 module Infobanks = Character__Infobanks
-
-
-(** @canonical Character.Store *)
-module Store = Character__Store
