@@ -160,7 +160,7 @@ let rec choose_minigame t =
   with _ -> choose_minigame t
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
-let food_bank_find_cost = [ (1, (1, "Biscuit x1")) ]
+let food_bank_find_cost = [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]
 
 let lookup_store k bank =
   match bank with
@@ -201,6 +201,7 @@ let rec food_item t =
     "Welcome to the Grocery Store!\n\
      Here are your food options:\n\
      1: Biscuit $1 \n\
+     2: Cake $3 (2 hunger bars) \n\
      0: Main Menu \n\
      Please choose an option!";
   let x = read_int () in
@@ -216,7 +217,29 @@ let rec food_item t =
           print_endline s;
           t.inventory
       in
-
+      if !new_bal < 0 then
+        let _ = print_endline "CANNOT AFFORD" in
+        food_item t
+      else
+        let new_t =
+          {
+            balance = !new_bal;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = new_inv;
+          }
+        in
+        new_t
+  | 2 ->
+      let y = lookup_store 2 food_bank_find_cost in
+      let new_bal = ref (t.balance - fst y) in
+      let new_inv =
+        try if_not_in_inventory (snd y) t.inventory
+        with ItemLimit s ->
+          new_bal := t.balance;
+          print_endline s;
+          t.inventory
+      in
       if !new_bal < 0 then
         let _ = print_endline "CANNOT AFFORD" in
         food_item t
@@ -239,7 +262,7 @@ let rec enumerate_inventory (inv : string list) (acc : int) =
 
 exception NoSuchItem of string
 
-let food_dict = [ ("Biscuit", 1) ]
+let food_dict = [ ("Biscuit", 1); ("Cake", 2) ]
 
 (*gets the amt of food that is supposed to replenish*)
 let rec get_hunger_value item lst =
