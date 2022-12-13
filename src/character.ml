@@ -364,14 +364,6 @@ let maze_minigame t =
   start_maze t
 
 let rec choose_minigame t =
-  let new_tt =
-    {
-      balance = t.balance;
-      hunger = t.hunger;
-      name = t.name;
-      inventory = t.inventory;
-    }
-  in
   print_endline "\n";
   print_endline
     "Welcome to the minigame menu!\n\
@@ -380,15 +372,8 @@ let rec choose_minigame t =
      1: Trivia\n\
      2: Maze\n\
      Please choose an option!";
+
   (* try *)
-  let new_ttt =
-    {
-      balance = t.balance;
-      hunger = t.hunger;
-      name = t.name;
-      inventory = t.inventory;
-    }
-  in
   let x = read_int () in
   match x with
   | 0 -> t
