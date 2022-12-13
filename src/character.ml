@@ -9,7 +9,7 @@ type t = {
 
 let data_dir_prefix = "data" ^ Filename.dir_sep
 
-let triva_questions_json =
+let trivia_questions_json =
   Yojson.Basic.from_file (data_dir_prefix ^ "trivia_questions.json")
 
 let maze_encounters_json =
@@ -49,15 +49,64 @@ let string_of_inventory inv = String.concat ", " inv
 
 (* prints all of the characteristics of the pet *)
 let print_stats t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   print_endline
-    (t.name ^ "'s Stats: Balance = $" ^ string_of_int t.balance ^ "; Hunger = "
-   ^ string_of_int t.hunger ^ "/"
+    (new_tt.name ^ "'s Stats: Balance = $" ^ string_of_int t.balance
+   ^ "; Hunger = " ^ string_of_int t.hunger ^ "/"
     ^ string_of_int get_max_hunger
     ^ " Inventory = ["
     ^ string_of_inventory t.inventory
     ^ "]")
 
 (* the first message the user sees when they open the game *)
+
+let rec lookup k difficulty =
+  match difficulty with
+  | [] -> failwith "Oops!"
+  | (k', v) :: t -> if k = k' then v else lookup k t
+
+let lookup_one_question1 rand difficulty question_num =
+  let v = lookup rand difficulty in
+  match v with
+  | h1, h2, h3 ->
+      print_endline ("Question " ^ question_num ^ ":");
+      print_endline h3;
+      let x = read_int () in
+      if string_of_int x = h1 then
+        let () = print_endline "CORRECT!" in
+        1
+      else
+        let () =
+          print_endline ("INCORRECT!" ^ " The correct answer was " ^ h2 ^ ".")
+        in
+        0
+(* the death message *)
+
+exception GameOver of string
+
+let lookup_one_question2 rand difficulty question_num =
+  let v = lookup rand difficulty in
+  match v with
+  | h1, h2, h3 ->
+      print_endline ("Question " ^ question_num ^ ":");
+      print_endline h3;
+      let x = read_int () in
+      if string_of_int x = h1 then
+        let () = print_endline "CORRECT!" in
+        1
+      else
+        let () =
+          print_endline ("INCORRECT!" ^ " The correct answer was " ^ h2 ^ ".")
+        in
+        0
+
 let welcome_message () =
   print_endline
     ("Hello Player! Welcome to Tamagotchi Simulator. In this game you will"
@@ -71,27 +120,61 @@ let welcome_message () =
 
   make_pet x
 
-(* the death message *)
-
-exception GameOver of string
+let lookup_one_question3 rand difficulty question_num =
+  let v = lookup rand difficulty in
+  match v with
+  | h1, h2, h3 ->
+      print_endline ("Question " ^ question_num ^ ":");
+      print_endline h3;
+      let x = read_int () in
+      if string_of_int x = h1 then
+        let () = print_endline "CORRECT!" in
+        1
+      else
+        let () =
+          print_endline ("INCORRECT!" ^ " The correct answer was " ^ h2 ^ ".")
+        in
+        0
 
 let death_exn t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   GameOver
     ("=====================================================================\n\
      \       \n\
-     \ GAME OVER: " ^ t.name
+     \ GAME OVER: " ^ new_tt.name
    ^ " has unfortunately died from starvation :( \n\
      \ \n\
      \ =====================================================================")
-
-(* let check_death t : bool = if t.hunger <= 0 then raise (death_exn t) else false *)
 
 let rec lookup k difficulty =
   match difficulty with
   | [] -> failwith "Oops!"
   | (k', v) :: t -> if k = k' then v else lookup k t
 
-let lookup_one_question rand difficulty question_num =
+let lookup_one_question4 rand difficulty question_num =
+  let v = lookup rand difficulty in
+  match v with
+  | h1, h2, h3 ->
+      print_endline ("Question " ^ question_num ^ ":");
+      print_endline h3;
+      let x = read_int () in
+      if string_of_int x = h1 then
+        let () = print_endline "CORRECT!" in
+        1
+      else
+        let () =
+          print_endline ("INCORRECT!" ^ " The correct answer was " ^ h2 ^ ".")
+        in
+        0
+
+let lookup_one_question5 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
   | h1, h2, h3 ->
@@ -119,13 +202,13 @@ let lookup_five_questions difficulty =
   | [] -> failwith "oops!"
   | [ h1; h2; h3; h4; h5 ] ->
       let amt = 0 in
-      let amt1 = lookup_one_question h1 difficulty "1" + amt in
-      let amt2 = lookup_one_question h2 difficulty "2" + amt1 in
-      let amt3 = lookup_one_question h3 difficulty "3" + amt2 in
-      let amt4 = lookup_one_question h4 difficulty "4" + amt3 in
-      let amt5 = lookup_one_question h5 difficulty "5" + amt4 in
+      let amt1 = lookup_one_question1 h1 difficulty "1" + amt in
+      let amt2 = lookup_one_question2 h2 difficulty "2" + amt1 in
+      let amt3 = lookup_one_question3 h3 difficulty "3" + amt2 in
+      let amt4 = lookup_one_question4 h4 difficulty "4" + amt3 in
+      let amt5 = lookup_one_question5 h5 difficulty "5" + amt4 in
       print_endline ("You got " ^ string_of_int amt5 ^ "/5 questions right!");
-      let easy, medium, _ = get_questions_from_json triva_questions_json in
+      let easy, medium, _ = get_questions_from_json trivia_questions_json in
       let word =
         if difficulty = easy then amt5
         else if difficulty = medium then amt5 * 2
@@ -136,13 +219,21 @@ let lookup_five_questions difficulty =
   | _ -> failwith "oops!"
 
 let rec choose_difficulty t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   print_endline
     "Choose Difficulty:\n\
      1:Easy (1x Multiplier)\n\
      2:Medium (2x Multiplier)\n\
      3:Hard (3x Multiplier)";
   let x = read_int () in
-  let easy, medium, hard = get_questions_from_json triva_questions_json in
+  let easy, medium, hard = get_questions_from_json trivia_questions_json in
   match x with
   | 1 ->
       let bonus = lookup_five_questions easy in
@@ -155,7 +246,7 @@ let rec choose_difficulty t =
   | 2 ->
       let bonus = lookup_five_questions medium * 2 in
       {
-        balance = t.balance + bonus;
+        balance = new_tt.balance + bonus;
         hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
@@ -171,8 +262,16 @@ let rec choose_difficulty t =
   | _ -> choose_difficulty t
 
 let trivia_minigame t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   print_endline "\n";
-  print_endline ("Hey " ^ t.name ^ "'s Owner! Welcome to Trivia!");
+  print_endline ("Hey " ^ new_tt.name ^ "'s Owner! Welcome to Trivia!");
   print_endline
     "You get money based on how many of the five questions you get correct! \
      Good luck!";
@@ -265,6 +364,14 @@ let maze_minigame t =
   start_maze t
 
 let rec choose_minigame t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   print_endline "\n";
   print_endline
     "Welcome to the minigame menu!\n\
@@ -274,6 +381,14 @@ let rec choose_minigame t =
      2: Maze\n\
      Please choose an option!";
   (* try *)
+  let new_ttt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   let x = read_int () in
   match x with
   | 0 -> t
@@ -319,7 +434,15 @@ let if_not_in_inventory i lst =
   else add_item_to_inventory i lst
 
 let rec food_item t =
-  print_stats t;
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
+  print_stats new_tt;
   print_endline
     "Welcome to the Grocery Store!\n\
      Here are your food options:\n\
@@ -327,6 +450,14 @@ let rec food_item t =
      2: Cake $3 (2 hunger bars) \n\
      0: Main Menu \n\
      Please choose an option!";
+  let new_ttt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   let x = read_int () in
   match x with
   | 0 -> t
@@ -347,7 +478,7 @@ let rec food_item t =
         let new_t =
           {
             balance = !new_bal;
-            hunger = t.hunger;
+            hunger = new_ttt.hunger;
             name = t.name;
             inventory = new_inv;
           }
@@ -416,11 +547,27 @@ let rec deplete_food item inventory =
       else h :: deplete_food item t
 
 let refill_hunger amt t =
-  let new_hunger = t.hunger + amt in
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
+  let new_hunger = new_tt.hunger + amt in
   if new_hunger >= get_max_hunger then get_max_hunger else new_hunger
 
 let feed_item idx t =
-  let item = get_food_in_inventory idx t.inventory 1 in
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
+  let item = get_food_in_inventory idx new_tt.inventory 1 in
   let refill_amt =
     get_hunger_value (String.sub item 0 (String.length item - 3)) food_dict
   in
@@ -437,8 +584,16 @@ let feed_item idx t =
   }
 
 let rec home_item t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   print_endline
-    ("Welcome to the Dining Room! Here you can feed " ^ t.name
+    ("Welcome to the Dining Room! Here you can feed " ^ new_tt.name
    ^ "!\nHere is your inventory: ["
     ^ string_of_inventory t.inventory
     ^ "] \n"
@@ -457,8 +612,16 @@ let rec home_item t =
         home_item t)
 
 let rec choose_store t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   let x = read_int () in
-  match x with 1 -> food_item t | _ -> choose_store t
+  match x with 1 -> food_item new_tt | _ -> choose_store new_tt
 
 let rec choose_home_activity t =
   let x = read_int () in
@@ -466,7 +629,15 @@ let rec choose_home_activity t =
 
 let rec choose_home t =
   print_endline "\n";
-  print_stats t;
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
+  print_stats new_tt;
   print_endline
     "Welcome to the home menu!\n\
      Here are your home options:\n\
@@ -476,7 +647,15 @@ let rec choose_home t =
 
 let rec choice_of_store_item t =
   print_endline "\n";
-  print_stats t;
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
+  print_stats new_tt;
   print_endline
     "Welcome to the store menu!\n\
      Here are your store options:\n\
@@ -487,7 +666,15 @@ let rec choice_of_store_item t =
 (* |||||||||||||||||||||||||||||OPTIONS|||||||||||||||||||||||||||||||||||||||||*)
 let rec user_options t =
   print_endline "\n";
-  print_stats t;
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
+  print_stats new_tt;
   print_endline
     ("Hello " ^ t.name
    ^ "'s Owner! This is the main menu. From here you can go to the store to\n\
@@ -496,11 +683,19 @@ let rec user_options t =
   print_endline "1: Store";
   print_endline "2: Minigames";
   print_endline "3: Home";
+  let new_ttt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   match read_int_opt () with
   | Some 1 ->
       let new_t =
         {
-          balance = t.balance;
+          balance = new_ttt.balance;
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
@@ -537,6 +732,6 @@ let rec game_loop pet =
   let new_t = user_options pet in
   game_loop new_t
 
-let intro =
+let intro () =
   let pet = welcome_message () in
   try game_loop pet with GameOver s -> print_endline s
