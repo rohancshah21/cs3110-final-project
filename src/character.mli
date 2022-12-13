@@ -19,7 +19,7 @@ val welcome_message : unit -> t
 val lookup : 'a -> ('a * 'b) list -> 'b
 (** [lookup k difficulty] finds the trivia bank questions with [difficulty] and returns it *)
 
-val lookup_one_question :
+val lookup_one_question1 :
   'a -> ('a * (string * string * string)) list -> string -> int
 (** [lookup_one_question rand difficulty question_num] randomly finds one question from the trivia bank with [difficulty] *)
 
