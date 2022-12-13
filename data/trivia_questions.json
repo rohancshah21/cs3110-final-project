@@ -1,0 +1,299 @@
+{
+	"easy_questions": [
+		{
+			"id": 0,
+			"ans": "4",
+      "ans_desc": "4: Honey",
+      "question": "What is the only food that cannot go bad?\n1: Dark Chocolate\n2: Peanut butter\n3: Canned Tuna\n4: Honey"
+    },
+    {	
+    "id": 1,
+    "ans": "2",
+    "ans_desc": "2: Liver",
+    "question": "What’s the heaviest organ in the human body?\n1: Brain\n2: Liver\n3: Skin\n4: Heart"
+    },
+		{
+			"id": 2,
+			"ans": "4",
+      "ans_desc": "4: Chihuahua",
+      "question": "Which of the following dog breeds is the smallest?\n1: Dachshund\n2: Poodle\n3: Pomeranian\n4: Chihuahua"
+    },
+		{
+			"id": 3,
+			"ans": "1",
+      "ans_desc": "1: Blue Whale",
+      "question": "What is the biggest animal that has ever lived?\n1: Blue whale\n2: African elephant\n3: Apatosaurus\n4: Spinosaurus"
+    },
+    {
+			"id": 4,
+			"ans": "2",
+      "ans_desc": "2: Sailfish",
+      "question": "What is the fastest water animal?\n1: Porpoise\n2: Sailfish\n3: Flying fish\n4: Tuna"
+    },
+    {
+			"id": 5,
+			"ans": "3",
+      "ans_desc": "3: Canada",
+      "question": "Cirque du Soleil” started in what country?\n1: France\n2: USA\n3: Canada\n4: Russia"
+    },
+    {
+			"id": 6,
+			"ans": "1",
+      "ans_desc": "1: Scotland",
+      "question": "Which country’s national animal is a unicorn?\n1: Scotland\n2: Denmark\n3: New Zealand\n4: France"
+    },
+    {
+			"id": 7,
+			"ans": "3",
+      "ans_desc": "3: Liver",
+      "question": "What lobster organ is made into a delicacy known as “tomalley”?\n1: Claw\n2: Tail\n3: Liver\n4: Antennae"
+    },
+    {
+			"id": 8,
+			"ans": "2",
+      "ans_desc": "2: Avatar and Avengers: End Game",
+      "question": "What are the two highest-grossing films of all time?\n1: Avengers: End Game and Star Wars: Episode VII – The Force Awakens\n2: Avatar and Avengers: End Game\n3: Avengers: Infinity War and Titanic\n4: Furious 7 and Avatar"
+    },
+    {
+			"id": 9,
+			"ans": "2",
+      "ans_desc": "2: Chickpea",
+      "question": "What is the main ingredient in a falafel?\n1: Lentil\n2: Chickpea\n3: Broccoli\n4: Split pea"
+    },
+    {
+			"id": 10,
+			"ans": "3",
+      "ans_desc": "3: Hamachi",
+      "question": "What is yellowtail fish called in Japanese?\n1: Ahi\n2: Ikura\n3: Hamachi\n4: Maguro"
+    },
+    {
+			"id": 11,
+			"ans": "3",
+      "ans_desc": "3: Golf",
+      "question": "What sport has been played on the moon?\n1: Frisbee\n2: Soccer\n 3: Golf\n4: Bocce ball"
+    },
+    {
+			"id": 12,
+			"ans": "4",
+      "ans_desc": "4: Home Alone",
+      "question": "What is the highest-grossing holiday movie of all time?\n1: Elf\n2: Die Hard\n3: It’s A Wonderful Life\n4: Home Alone"
+    },
+    {
+			"id": 13,
+			"ans": "3",
+      "ans_desc": "3: Fungi",
+      "question": "Mycology is the scientific study of what?\n1: Cancer cells\n2: Flowers\n3: Fungi\n4: Blood"
+    },
+    {
+			"id": 14,
+			"ans": "3",
+      "ans_desc": "3: Bonobos",
+      "question": "What animal is the closest living relative of a human?\n1:Gorillas\n2: Monkeys\n3: Bonobos\n4: Homo sapiens"
+    },
+		{
+			"id": 15,
+			"ans": "4",
+      "ans_desc": "4: Smallpox",
+      "question": "The first vaccine was for which disease?\n1: Chickenpox\n2: Polio\n3: Measles\n4: Smallpox"
+    }
+
+  
+    ],
+  "medium_questions": [
+    {
+      "id": 0,
+      "ans": "3",
+      "ans_desc": "3: Italy",
+      "question": "Which country is the largest exporter of olive oil?\n1: China\n2: Greece\n3: Italy\n4: France"
+    },
+    {	
+      "id": 1,
+      "ans": "2",
+      "ans_desc": "2: A tight rope",
+      "question": "What does a funambulist walk on?\n1: Fire\n2: A tight rope\n3: Water\n4: Seashells"
+      },
+      {
+        "id": 2,
+        "ans": "1",
+        "ans_desc": "1: Friendship",
+        "question": "What is the state motto of Texas?\n1: Friendship\n2: Excelsior\n3: Liberty, Justice and Virtue\n4: Commerce"
+      },
+      {
+        "id": 3,
+        "ans": "2",
+        "ans_desc": "2: Topeka",
+        "question": "What is the capital city of Kansas?\n1: Little Rock\n2: Topeka\n3: Montgomery\n4: Baton Rouge"
+      },
+      {
+        "id": 4,
+        "ans": "2",
+        "ans_desc": "2: Wyoming",
+        "question":  "Which state has the lowest cumulative population?\n1: Alaska\n2: Wyoming\n3: Vermont\n4: North Dakota"
+      },
+      {
+        "id": 5,
+        "ans": "3",
+        "ans_desc": "3: 1948",
+        "question": "What year was In-N-Out Burger founded?\n1: 1968\n2: 1975\n3: 1948\n4: 1985"
+      },
+      {
+        "id": 6,
+        "ans": "3",
+        "ans_desc": "3: Ecuador",
+        "question":  "What country are the Galapagos Islands located in?\n1: Belize\n2: Brazil\n3: Ecuador\n4: Colombia"
+      },
+      {
+        "id": 7,
+        "ans": "4",
+        "ans_desc": "4: Octopus",
+        "question": "Which sea creature has three hearts?\n1: Shark\n2: Jellyfish\n3: Stingray\n4: Octopus"
+      },
+      {
+        "id": 8,
+        "ans": "2",
+        "ans_desc": "2: El Salvador",
+        "question": "Pupusas are from what country?\n1: Mexico\n2: El Salvador\n3: Brazil\n4: Poland"
+      },
+      {
+        "id": 9,
+        "ans": "3",
+        "ans_desc": "3: Iago",
+        "question": "What is the name of the talkative parrot in Aladdin?\n1: Pascal\n2: Meeko\n3: Iago\n4: Abu"
+      },
+      {
+        "id": 10,
+        "ans": "2",
+        "ans_desc": "2: Austria",
+        "question": "Where did the croissant originate?\n1: France\n2: Austria\n3: Tokyo\n4: Turkey"
+      },
+      {
+        "id": 11,
+        "ans": "4",
+        "ans_desc": "4: Columbia",
+        "question": "What country is Shakira from?\n1: Mexico\n2: Puerto Rico\n3: Paraguay\n4: Colombia"
+      },
+      {
+        "id": 12,
+        "ans": "2",
+        "ans_desc": "2: Brooks Brothers",
+        "question": "Which of these retailers is the oldest operating?\n1: Macys\n2: Brooks Brothers\n3: Kiehls\n4: Saks Fifth Avenue"
+      },
+      {
+        "id": 13,
+        "ans": "4",
+        "ans_desc": "4: Greece",
+        "question": "Mount Olympus is the highest mountain in what country?\n1: Italy\n2: Spain\n3: Portugal\n4: Greece"
+      },
+      {
+        "id": 14,
+        "ans": "1",
+        "ans_desc": "1: Belgium",
+        "question": "From which country do French fries originate?\n1: Belgium\n2: France\n3: USA\n4: England"
+      },
+      {
+        "id": 15,
+        "ans": "3",
+        "ans_desc": "3: Snow White",
+        "question": "Who was the first Disney Princess?\n1: Aurora\n2: Cinderella\n3: Snow White\n4: Jasmine"
+      }
+    ],
+    "hard_questions": [
+      {
+        "id": 0,
+        "ans": "3",
+        "ans_desc": "3: 84lbs",
+        "question": "Someone weighing 220lbs on Earth would weigh about how much on Mars?\n1: 250lb\n2: 100lbs\n3: 84lbs\n4: 200lbs"
+      },
+      {	
+        "id": 1,
+        "ans": "1",
+        "ans_desc": "1: Jupiter, Saturn, Uranus, and Neptune",
+        "question": "What are the four planets that are known as 'Gas Giants?'\n1: Jupiter, Saturn, Uranus, and Neptune\n2: Mars, Venus, Uranus, and Saturn\n3: Mercury, Jupiter, Mars, Uranus\n4: Earth, Mars, Jupiter, Saturn"
+        },
+        {
+          "id": 2,
+          "ans": "4",
+          "ans_desc": "4: 99.86%",
+          "question": "Which of the following dog breeds is the smallest?\n1: Dachshund\n2: Poodle\n3: Pomeranian\n4: Chihuahua"
+        },
+        {
+          "id": 3,
+          "ans": "2",
+          "ans_desc": "2: Kite Flying",
+          "question": "What favorite past-time activity in the United States is considered a professional sport in Thailand?\n1: Fishing\n2: Kite flying\n3: Frisbee\n4: Bird watching"
+        },
+        {
+          "id": 4,
+          "ans": "3",
+          "ans_desc": "3: Japan",
+          "question": "What country has the world's largest bowling alley?\n1: United States\n2: England\n3: Japan\n4: France"
+        },
+        {
+          "id": 5,
+          "ans": "1",
+          "ans_desc": "1: Whitefish",
+          "question": "What are imitation crab sticks made of?\n1: Whitefish\n2: Cuttlefish\n3: Tofu\n4: Calamari"
+        },
+        {
+          "id": 6,
+          "ans": "1",
+          "ans_desc": "1: Chicago, Illinois",
+          "question": "Where is Kanye West from?\n1: Chicago, Illinois\n2: Boston, Massachusetts\n3: Detroit, Michigan\n4: Los Angeles, California"
+        },
+        {
+          "id": 7,
+          "ans": "2",
+          "ans_desc": "2: The Vatican City",
+          "question": "What is the smallest country in the world?\n1: Luxembourg\n2: The Vatican City\n3: Palau\n4: San Marino"
+        },
+        {
+          "id": 8,
+          "ans": "4",
+          "ans_desc": "4: Aretha Franklin",
+          "question": "Who was the first woman to ever be inducted into the Rock and Roll Hall of Fame?\n1: Dolly Parton\n2: Janis Joplin\n3: Joni Mitchell\n4: Aretha Franklin"
+        },
+        {
+          "id": 9,
+          "ans": "1",
+          "ans_desc": "1: Giant squid",
+          "question": "Which animal has the largest eyes?\n1: Giant squid\n2: Blue whale\n3: Ostrich\n4: Elephant"
+        },
+        {
+          "id": 10,
+          "ans": "1",
+          "ans_desc": "1: Peter Gene Hernandez",
+          "question": "What is Bruno Mars’ real name?\n1: Peter Gene Hernandez\n2: Michael Nguyen-Stevenson\n3: Ray Aguirre\n4: Bruno Maritza"
+        },
+        {
+          "id": 11,
+          "ans": "4",
+          "ans_desc": "4: Toy Story",
+          "question": "What was the very first Pixar movie?\n1: Wall-E\n2: Monsters, Inc.\n3: A Bug’s Life\n4: Toy Story"
+        },
+        {
+          "id": 12,
+          "ans": "2",
+          "ans_desc": "2: Bourbon",
+          "question": "What is the national alcoholic beverage of America?\n1: Rye\n2: Bourbon\n3: Whiskey\n4: Cognac"
+        },
+        {
+          "id": 13,
+          "ans": "4",
+          "ans_desc": "4: Polo",
+          "question": "What sport is referred to as the sport of kings?\n1: Bocce Ball\n2: Cricket\n3: Rugby\n4: Polo"
+        },
+        {
+          "id": 14,
+          "ans": "3",
+          "ans_desc": "3: Ireland",
+          "question": "Which country ranks first in cereal consumption per capita?\n1: USA\n2: Italy\n3: Ireland\n4: Philippines"
+        },
+        {
+          "id": 15,
+          "ans": "4",
+          "ans_desc": "4: New Mexico",
+          "question": "In what U.S. state does Breaking Bad take place?\n1: Utah\n2: Missouri\n3: Texas\n4: New Mexico"
+        }
+      ]
+    
+}

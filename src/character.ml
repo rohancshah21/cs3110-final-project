@@ -1,4 +1,5 @@
 open Infobanks
+open Yojson.Basic.Util
 
 type t = {
   balance : int; (* current balance *)
@@ -7,9 +8,36 @@ type t = {
   inventory : string list;
 }
 
+let data_dir_prefix = "data" ^ Filename.dir_sep
+
+let triva_questions_json =
+  Yojson.Basic.from_file (data_dir_prefix ^ "trivia_questions.json")
+
 (* makes a new pet with the given name *)
 let make_pet pet_name =
   { balance = 0; hunger = 3; name = pet_name; inventory = [] }
+
+let parse_questions j =
+  let question =
+    ( j |> member "id" |> to_int,
+      ( j |> member "ans" |> to_string,
+        j |> member "ans_desc" |> to_string,
+        j |> member "question" |> to_string ) )
+  in
+  question
+
+let get_questions_from_json json =
+  let easy_questions =
+    json |> member "easy_questions" |> to_list |> List.map parse_questions
+  in
+  let medium_questions =
+    json |> member "medium_questions" |> to_list |> List.map parse_questions
+  in
+  let hard_questions =
+    json |> member "hard_questions" |> to_list |> List.map parse_questions
+  in
+
+  (easy_questions, medium_questions, hard_questions)
 
 let get_max_hunger =
   let p = make_pet "" in
@@ -111,9 +139,10 @@ let rec choose_difficulty t =
      2:Medium (2x Multiplier)\n\
      3:Hard (3x Multiplier)";
   let x = read_int () in
+  let easy, medium, hard = get_questions_from_json triva_questions_json in
   match x with
   | 1 ->
-      let bonus = lookup_five_questions easy_trivia_bank in
+      let bonus = lookup_five_questions easy in
       {
         balance = t.balance + bonus;
         hunger = t.hunger - 1;
@@ -121,7 +150,7 @@ let rec choose_difficulty t =
         inventory = t.inventory;
       }
   | 2 ->
-      let bonus = lookup_five_questions medium_trivia_bank * 2 in
+      let bonus = lookup_five_questions medium * 2 in
       {
         balance = t.balance + bonus;
         hunger = t.hunger - 1;
@@ -129,7 +158,7 @@ let rec choose_difficulty t =
         inventory = t.inventory;
       }
   | 3 ->
-      let bonus = lookup_five_questions hard_trivia_bank * 3 in
+      let bonus = lookup_five_questions hard * 3 in
       {
         balance = t.balance + bonus;
         hunger = t.hunger - 1;
@@ -154,10 +183,10 @@ let rec choose_minigame t =
      0: Main Menu\n\
      1: Trivia\n\
      Please choose an option!";
-  try
-    let x = read_int () in
-    match x with 0 -> t | 1 -> trivia_minigame t | _ -> choose_minigame t
-  with _ -> choose_minigame t
+  (* try *)
+  let x = read_int () in
+  match x with 0 -> t | 1 -> trivia_minigame t | _ -> choose_minigame t
+(* with _ -> choose_minigame t *)
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
 let food_bank_find_cost = [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]

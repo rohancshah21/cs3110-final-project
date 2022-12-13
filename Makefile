@@ -27,10 +27,6 @@ zip:
 	rm -f tamagotchi.zip
 	zip -r tamagotchi.zip . 
 
-clean:
-	dune clean
-	rm -f adventure.zip
-
 doc:
 	dune build @doc
 

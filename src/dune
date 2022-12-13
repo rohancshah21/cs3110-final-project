@@ -1,3 +1,4 @@
 (library
  (name character)
- (public_name Character))
+ (public_name Character)
+ (libraries yojson ANSITerminal))
