@@ -290,7 +290,7 @@ let rec deplete_food item inventory =
         else
           let new_word = String.sub h 0 (String.length h - 1) ^ number in
           new_word :: deplete_food item t
-      else deplete_food item t
+      else h :: deplete_food item t
 
 let refill_hunger amt t =
   let new_hunger = t.hunger + amt in
@@ -346,7 +346,7 @@ let rec choose_home t =
   print_stats t;
   print_endline
     "Welcome to the home menu!\n\
-     Here are your store options:\n\
+     Here are your home options:\n\
      1: Feed\n\
      Please choose an option!";
   try choose_home_activity t with _ -> choose_home t
@@ -412,7 +412,7 @@ let rec user_options t =
 
 let rec game_loop pet =
   let new_t = user_options pet in
-  if new_t.hunger = 0 then print_endline "YOU LOST!" else game_loop new_t
+  game_loop new_t
 
 let intro =
   let pet = welcome_message in
