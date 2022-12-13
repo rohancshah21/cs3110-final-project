@@ -12,6 +12,9 @@ let data_dir_prefix = "data" ^ Filename.dir_sep
 let triva_questions_json =
   Yojson.Basic.from_file (data_dir_prefix ^ "trivia_questions.json")
 
+let maze_encounters_json =
+  Yojson.Basic.from_file (data_dir_prefix ^ "maze_encounters.json")
+
 (* makes a new pet with the given name *)
 let make_pet pet_name =
   { balance = 0; hunger = 3; name = pet_name; inventory = [] }
@@ -175,6 +178,92 @@ let trivia_minigame t =
      Good luck!";
   choose_difficulty t
 
+let parse_encounters encounter =
+  ( encounter |> member "prompt" |> to_string,
+    encounter |> member "ans" |> to_string,
+    encounter |> member "right_ans" |> to_string,
+    encounter |> member "wrong_ans" |> to_string )
+
+let generate_encounters json =
+  let all_encounters =
+    json |> member "encounters" |> to_list |> List.map parse_encounters
+  in
+  let arr = Array.of_list all_encounters in
+  let rec generator encounter_array i acc =
+    if i = 0 then acc
+    else
+      let i = Random.int (List.length all_encounters) in
+      let e = arr.(i) in
+      if e = ("rcs", "rcs", "rcs", "rcs") then generator encounter_array i acc
+      else (
+        arr.(i) <- ("rcs", "rcs", "rcs", "rcs");
+        generator encounter_array (i - 1) (e :: acc))
+  in
+  generator arr 5 []
+
+let rec iter_encounters encounters t =
+  match encounters with
+  | [] ->
+      print_endline
+        "Congrats, you've reached the end of the maze and earned $10!";
+      {
+        balance = t.balance + 10;
+        hunger = t.hunger - 1;
+        name = t.name;
+        inventory = t.inventory;
+      }
+  | h :: tail -> (
+      match h with
+      | prompt, ans, right_ans, wrong_ans -> (
+          print_endline ("\n" ^ prompt);
+          print_endline "Type 0 to go left or 1 to go right.";
+          let x = read_int () in
+          let ans = int_of_string ans in
+          match x with
+          | 0 ->
+              if ans = 0 then (
+                print_endline ("\n" ^ right_ans);
+                iter_encounters tail t)
+              else (
+                print_endline ("\n" ^ wrong_ans);
+                print_endline
+                  "\n\
+                   Unfortunately you didn't find the prize. Better luck next \
+                   time!";
+                {
+                  balance = t.balance;
+                  hunger = t.hunger - 1;
+                  name = t.name;
+                  inventory = t.inventory;
+                })
+          | 1 ->
+              if ans = 1 then (
+                print_endline ("\n" ^ right_ans);
+                iter_encounters tail t)
+              else (
+                print_endline ("\n" ^ wrong_ans);
+                print_endline
+                  "\n\
+                  \ Unfortunately you didn't find the prize. Better luck next \
+                   time!";
+                {
+                  balance = t.balance;
+                  hunger = t.hunger - 1;
+                  name = t.name;
+                  inventory = t.inventory;
+                })
+          | _ -> failwith ""))
+
+let start_maze t =
+  let encounters = generate_encounters maze_encounters_json in
+  iter_encounters encounters t
+
+let maze_minigame t =
+  print_endline "\n";
+  print_endline ("Hey " ^ t.name ^ "'s Owner! Welcome to Maze!");
+  print_endline "Find the prize in the maze for some money. Good luck!\n";
+  start_maze t
+
 let rec choose_minigame t =
   print_endline "\n";
   print_endline
@@ -182,10 +271,15 @@ let rec choose_minigame t =
      Here are your minigame options:\n\
      0: Main Menu\n\
      1: Trivia\n\
+     2: Maze\n\
      Please choose an option!";
   (* try *)
   let x = read_int () in
-  match x with 0 -> t | 1 -> trivia_minigame t | _ -> choose_minigame t
+  match x with
+  | 0 -> t
+  | 1 -> trivia_minigame t
+  | 2 -> maze_minigame t
+  | _ -> choose_minigame t
 (* with _ -> choose_minigame t *)
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
