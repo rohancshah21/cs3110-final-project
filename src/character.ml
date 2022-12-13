@@ -230,28 +230,52 @@ let rec choose_difficulty t =
   let easy, medium, hard = get_questions_from_json trivia_questions_json in
   match x with
   | 1 ->
+      let new_t_with_easy =
+        {
+          balance = new_tt.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      in
       let bonus = lookup_five_questions easy in
       {
-        balance = t.balance + bonus;
-        hunger = t.hunger - 1;
-        name = t.name;
-        inventory = t.inventory;
+        balance = new_t_with_easy.balance + bonus;
+        hunger = new_t_with_easy.hunger - 1;
+        name = new_t_with_easy.name;
+        inventory = new_t_with_easy.inventory;
       }
   | 2 ->
+      let new_t_with_medium =
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      in
       let bonus = lookup_five_questions medium * 2 in
       {
-        balance = new_tt.balance + bonus;
-        hunger = t.hunger - 1;
-        name = t.name;
-        inventory = t.inventory;
+        balance = new_t_with_medium.balance + bonus;
+        hunger = new_t_with_medium.hunger - 1;
+        name = new_t_with_medium.name;
+        inventory = new_t_with_medium.inventory;
       }
   | 3 ->
+      let new_t_with_hard =
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+      in
       let bonus = lookup_five_questions hard * 3 in
       {
-        balance = t.balance + bonus;
-        hunger = t.hunger - 1;
-        name = t.name;
-        inventory = t.inventory;
+        balance = new_t_with_hard.balance + bonus;
+        hunger = new_t_with_hard.hunger - 1;
+        name = new_t_with_hard.name;
+        inventory = new_t_with_hard.inventory;
       }
   | _ -> choose_difficulty t
 
@@ -301,9 +325,7 @@ let rec choose_minigame t =
   | 0 -> t
   | 1 -> trivia_minigame new_ttt
   | _ -> choose_minigame new_tt
-(* with _ -> choose_minigame t *)
 
-(* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
 let food_bank_find_cost = [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]
 
 let lookup_store k bank =
@@ -638,6 +660,6 @@ let rec game_loop pet =
   let new_t = user_options pet in
   game_loop new_t
 
-let intro =
+let intro () =
   let pet = welcome_message () in
   try game_loop pet with GameOver s -> print_endline s
