@@ -7,8 +7,6 @@ open Character
     print information to the user in the terminal, which is not necessary to
     test. *)
 
-let t = make_pet "Bob"
-
 let menu_tests =
   [
     ( "looking up questions with no difficulty raises an error" >:: fun _ ->
@@ -34,6 +32,12 @@ let store_tests =
         food_bank_find_cost );
     ( "looking up in an empty store raises an error" >:: fun _ ->
       assert_raises (Failure "Oops!") (lookup_store 1 []) );
+    ( "looking up the cost of a biscuit key finds the entry in the food bank"
+    >:: fun _ ->
+      assert_equal (1, "Biscuit x1") (lookup_store 1 food_bank_find_cost) );
+    ( "looking up the cost of a cake key finds the entry in the food bank"
+    >:: fun _ ->
+      assert_equal (3, "Cake x1") (lookup_store 2 food_bank_find_cost) );
     ( "adding an item to an inventory is correctly stored in the list"
     >:: fun _ -> assert_equal [ "Biscuit" ] (add_item_to_inventory "Biscuit" [])
     );
@@ -51,6 +55,21 @@ let store_tests =
               "Biscuit";
               "Biscuit";
               "Biscuit";
+            ]) );
+    ( "cannot add over 10 items to a list with varying food" >:: fun _ ->
+      assert_raises (ItemLimit "\n YOU ARE AT ITEM LIMIT") (fun () ->
+          add_item_to_inventory "Biscuit"
+            [
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
             ]) );
     ( "adding an item to something not in the inventory initially is correctly \
        stored in the list"
@@ -70,6 +89,21 @@ let store_tests =
               "Biscuit";
               "Biscuit";
               "Biscuit";
+            ]) );
+    ( "cannot add over 10 items to a list with varying food" >:: fun _ ->
+      assert_raises (ItemLimit "\n YOU ARE AT ITEM LIMIT") (fun () ->
+          if_not_in_inventory "Biscuit"
+            [
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
+              "Biscuit";
+              "Cake";
             ]) );
     ( "enumerating an empty inventory returns an empty list" >:: fun _ ->
       assert_equal [] (enumerate_inventory [] 1) );
@@ -107,8 +141,10 @@ let store_tests =
       assert_equal
         [ "Cake, x1"; "Biscuit, x1" ]
         (deplete_food "Biscuit" [ "Cake, x1"; "Biscuit, x2" ]) );
-    ( "cannot go over the max hunger of 3" >:: fun _ ->
-      assert_equal 3 (refill_hunger 3 t) );
+    ( "depleting food from a single value of food then removes it from the list"
+    >:: fun _ ->
+      assert_equal [ "Biscuit, x2" ]
+        (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ]) );
   ]
 
 let suite =

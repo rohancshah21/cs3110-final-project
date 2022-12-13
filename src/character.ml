@@ -9,7 +9,7 @@ type t = {
 
 let data_dir_prefix = "data" ^ Filename.dir_sep
 
-let triva_questions_json =
+let trivia_questions_json =
   Yojson.Basic.from_file (data_dir_prefix ^ "trivia_questions.json")
 
 (* makes a new pet with the given name *)
@@ -81,8 +81,6 @@ let death_exn t =
      \ \n\
      \ =====================================================================")
 
-(* let check_death t : bool = if t.hunger <= 0 then raise (death_exn t) else false *)
-
 let rec lookup k difficulty =
   match difficulty with
   | [] -> failwith "Oops!"
@@ -122,7 +120,7 @@ let lookup_five_questions difficulty =
       let amt4 = lookup_one_question h4 difficulty "4" + amt3 in
       let amt5 = lookup_one_question h5 difficulty "5" + amt4 in
       print_endline ("You got " ^ string_of_int amt5 ^ "/5 questions right!");
-      let easy, medium, _ = get_questions_from_json triva_questions_json in
+      let easy, medium, _ = get_questions_from_json trivia_questions_json in
       let word =
         if difficulty = easy then amt5
         else if difficulty = medium then amt5 * 2
@@ -139,7 +137,7 @@ let rec choose_difficulty t =
      2:Medium (2x Multiplier)\n\
      3:Hard (3x Multiplier)";
   let x = read_int () in
-  let easy, medium, hard = get_questions_from_json triva_questions_json in
+  let easy, medium, hard = get_questions_from_json trivia_questions_json in
   match x with
   | 1 ->
       let bonus = lookup_five_questions easy in
