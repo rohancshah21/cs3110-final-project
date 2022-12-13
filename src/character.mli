@@ -21,7 +21,23 @@ val lookup : 'a -> ('a * 'b) list -> 'b
 
 val lookup_one_question1 :
   'a -> ('a * (string * string * string)) list -> string -> int
-(** [lookup_one_question rand difficulty question_num] randomly finds one question from the trivia bank with [difficulty] *)
+(** [lookup_one_question1 rand difficulty question_num] randomly finds question 1 from the trivia bank with [difficulty] *)
+
+val lookup_one_question2 :
+  'a -> ('a * (string * string * string)) list -> string -> int
+(** [lookup_one_question1 rand difficulty question_num] randomly finds question 2 from the trivia bank with [difficulty] *)
+
+val lookup_one_question3 :
+  'a -> ('a * (string * string * string)) list -> string -> int
+(** [lookup_one_question1 rand difficulty question_num] randomly finds question 3 from the trivia bank with [difficulty] *)
+
+val lookup_one_question4 :
+  'a -> ('a * (string * string * string)) list -> string -> int
+(** [lookup_one_question1 rand difficulty question_num] randomly finds question 4 from the trivia bank with [difficulty] *)
+
+val lookup_one_question5 :
+  'a -> ('a * (string * string * string)) list -> string -> int
+(** [lookup_one_question1 rand difficulty question_num] randomly finds question 5 from the trivia bank with [difficulty] *)
 
 val five_random_numbers : 'a list -> int list -> int list
 (** [five_random_numbers difficulty acc] creates a list in [acc] that has 5 randomly generated numbers *)

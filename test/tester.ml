@@ -12,9 +12,21 @@ let menu_tests =
     ( "looking up questions with no difficulty raises an error" >:: fun _ ->
       assert_raises (Failure "Oops!") (lookup 1 []) );
     ( "looking up 1 questions with no difficulty raises an error" >:: fun _ ->
-      assert_raises (Failure "Oops!") (fun () -> lookup_one_question1 1 [] "2")
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question1 1 [] "1")
     );
-    ( "looking up 5 questions with no difficulty raises an error" >:: fun _ ->
+    ( "looking up question 1 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question2 1 [] "2")
+    );
+    ( "looking up question 2 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question3 1 [] "3")
+    );
+    ( "looking up question 3 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question4 1 [] "4")
+    );
+    ( "looking up question 4 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question5 1 [] "5")
+    );
+    ( "looking up question 5 with no difficulty raises an error" >:: fun _ ->
       assert_raises (Failure "oops!") (fun () -> lookup_five_questions []) );
     ("max hunger is 3" >:: fun _ -> assert_equal 3 get_max_hunger);
     ( "string of inventory on an empty inventory is an empty string" >:: fun _ ->
