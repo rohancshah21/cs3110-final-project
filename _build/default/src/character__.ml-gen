@@ -1,2 +1,0 @@
-(** @canonical Character.Infobanks *)
-module Infobanks = Character__Infobanks
