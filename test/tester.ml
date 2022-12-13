@@ -12,7 +12,7 @@ let menu_tests =
     ( "looking up questions with no difficulty raises an error" >:: fun _ ->
       assert_raises (Failure "Oops!") (lookup 1 []) );
     ( "looking up 1 questions with no difficulty raises an error" >:: fun _ ->
-      assert_raises (Failure "Oops!") (fun () -> lookup_one_question 1 [] "2")
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question1 1 [] "2")
     );
     ( "looking up 5 questions with no difficulty raises an error" >:: fun _ ->
       assert_raises (Failure "oops!") (fun () -> lookup_five_questions []) );
