@@ -54,7 +54,7 @@ val trivia_minigame : t -> t
 val choose_minigame : t -> t
 (** [choose_minigame a] lets users choose a minigame and begin the game *)
 
-val intro : unit
+val intro : unit -> unit
 
 (************ STORE FUNCTIONS ****************)
 
