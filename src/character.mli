@@ -1,6 +1,8 @@
 type t
 (** The abstract type of values representing a Tamagotchi account. *)
 
+val intro : unit -> unit
+
 val make_pet : string -> t
 (** [make_pet a] makes a new pet [a]. *)
 
@@ -53,8 +55,6 @@ val trivia_minigame : t -> t
 
 val choose_minigame : t -> t
 (** [choose_minigame a] lets users choose a minigame and begin the game *)
-
-val intro : unit -> unit
 
 (************ STORE FUNCTIONS ****************)
 

@@ -7,7 +7,7 @@ open Character
     print information to the user in the terminal, which is not necessary to
     test. *)
 
-let menu_tests =
+let trivia_tests =
   [
     ( "looking up questions with no difficulty raises an error" >:: fun _ ->
       assert_raises (Failure "Oops!") (fun () -> lookup 1 []) );
@@ -29,16 +29,16 @@ let menu_tests =
     ( "looking up question 5 with no difficulty raises an error" >:: fun _ ->
       assert_raises (Invalid_argument "Random.int") (fun () ->
           lookup_five_questions []) );
+  ]
+
+let store_tests =
+  [
     ("max hunger is 3" >:: fun _ -> assert_equal 3 get_max_hunger);
     ( "string of inventory on an empty inventory is an empty string" >:: fun _ ->
       assert_equal "" (string_of_inventory []) );
     ( "string of inventory prints properly" >:: fun _ ->
       assert_equal "Cake, Biscuit" (string_of_inventory [ "Cake"; "Biscuit" ])
     );
-  ]
-
-let store_tests =
-  [
     ( "food bank costs are stored correctly" >:: fun _ ->
       assert_equal
         [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]
@@ -52,8 +52,8 @@ let store_tests =
     >:: fun _ ->
       assert_equal (3, "Cake x1") (lookup_store 2 food_bank_find_cost) );
     (* ( "adding an item to an inventory is correctly stored in the list"
-    >:: fun _ ->
-      assert_equal [ "Biscuit x1" ] (add_item_to_inventory "Biscuit" []) ); *)
+       >:: fun _ ->
+         assert_equal [ "Biscuit x1" ] (add_item_to_inventory "Biscuit" []) ); *)
     ( "cannot add over 10 items to a list" >:: fun _ ->
       assert_raises (Failure "int_of_string") (fun () ->
           add_item_to_inventory "Biscuit"
@@ -160,8 +160,20 @@ let store_tests =
         (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ]) );
   ]
 
+let maze_tests =
+  [
+    ( "depleting food from an inventory correctly decrements" >:: fun _ ->
+      assert_equal
+        [ "Cake, x1"; "Biscuit, x1" ]
+        (deplete_food "Biscuit" [ "Cake, x1"; "Biscuit, x2" ]) );
+    ( "depleting food from a single value of food then removes it from the list"
+    >:: fun _ ->
+      assert_equal [ "Biscuit, x2" ]
+        (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ]) );
+  ]
+
 let suite =
   "test suite for CS 3110 Final Project"
-  >::: List.flatten [ menu_tests; store_tests ]
+  >::: List.flatten [ trivia_tests; store_tests; maze_tests ]
 
 let _ = run_test_tt_main suite

@@ -7,94 +7,94 @@
       "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "You stumble upon a large, deeply black pond. To the left is a waterfall with a dim light emanating, and there's more foliage to the right.",
+      "ans": "1",
+      "right_ans": "You pass through the foliage, knocking down mysterious plants and insects. You continue through the maze.",
+      "wrong_ans": "You walk into the enticing light, only to be suffocated by a seemingly endless stream of water."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "Thousands of creatures (certainly deadly) begin pouring into the enclosure. You look for any escape, and to the left is an opening of the enclosure, while to the right is a cliff ending.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "Going through the opening has guaranteed safety, for now. You continue through the maze.",
+      "wrong_ans": "You take a leap of faith, only to be met with a crushing blow of a fall."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "You encounter a golden head in the center of the room. A voice beckons you to take it with you, and you must escape by going left or right.",
+      "ans": "1",
+      "right_ans": "The passage on the right leads you outside of the room back into the maze. You're safe, and continue on.",
+      "wrong_ans": "The passage on the left leads you to a pit of venomous cobras, forcing you to succumb to a slow and painful death."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "A giant group of tribesmen spot you and being frantically chasing you. You must take a chance and flee to the left or right.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "You seem to escape the tribesmen, for now. Tired, you make your way through the maze.",
+      "wrong_ans": "You breathe a sigh of relief after escaping. But, alas, there's someone behind you with an arrow pointing to your head..."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "A room with various enscriptions and creepy sayings appears before you. To the right is a room marked with a skull engraving, and to the left is a room marked by a lion engraving.",
+      "ans": "1",
+      "right_ans": "Though the skull was certainly a menacing sign, you move forward through the maze.",
+      "wrong_ans": "The lion room, unfortunately, harbored a lion. You're subsequently ripped to shreds."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "In a strange turn of events, a menacing screen with mysterious symbols materializes. You make a choice to hurdle around it to the left or right.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "The left brings you to another expanse of foliage, and you continue through the maze.",
+      "wrong_ans": "You hear a low buzzing from the screen, and are horrified to see things of unimaginable thoughts emerge from the screen and kill you."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "A dog suddenly runs into the scene. You must decide to follow it along a river on the right, or continue your path through the foliage on the left.",
+      "ans": "1",
+      "right_ans": "Just like a man's best friend, following the dog has brought you to safety. You continue along the river bank.",
+      "wrong_ans": "Not following the dog was the wrong choice. An enormous hound of its companions proceeds gruesomely rip you apart."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "You encounter a fork in the maze, with complete darkness coming from the left, and complete silence (but light) on the right.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "Fearlessly, you trudge through the darkness and continue through the maze.",
+      "wrong_ans": "The light was unfortunately a false sense of safety. You succumb to freakish hallucinations the light produces."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "Spiders pour in from beneath and above. You scramble for safety to the left or right.",
+      "ans": "1",
+      "right_ans": "Having an immense fear of spiders, you breath a sigh of relief as you escape and move through the maze.",
+      "wrong_ans": "A genetically engineered, queen spider awaits you and chooses you as her next meal."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "You come across a seemingly raided military compound. You can investigate the mess hall to the right, or check the embers by the last campfire.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "The fleeting warmth of the embers is the last safe haven on the compound. However, you know you must continue through the maze.",
+      "wrong_ans": "In the mess hall, you discover a ferocious tiger feasting on human bodies. It looks like you're next."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "You come across a decrepit piece of airplane wreckage on your left. You can decided to move left and check out the site, or move onwards on the right.",
+      "ans": "1",
+      "right_ans": "You move away from the airplane wreckage, and continue onwards.",
+      "wrong_ans": "Like the military compound, a tiger scours through the wreckage. You know it's over."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "You encounter a fork in the maze, with shrill howling coming from the left and complete silence coming from the right.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "The howling seems to be a friendly pack of wolves. You run behind them and continue onwards.",
+      "wrong_ans": "Though the silence was appeasing, you hear a click and are suddenly crushed by debris."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "You find a house, with boarded up windows and ivy growing all over it on your right. You can check it out, or move onwards on the left.",
+      "ans": "1",
+      "right_ans": "Though you decided not to go inside the house, moving around it has a cleared a path you continue on.",
+      "wrong_ans": "A pack of wild apes descends upon you from the jungle trees, and you perish."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
+      "prompt": "You find various books littered on the ground. The first one you pick up and read tells you to immediately look left.",
       "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "right_ans": "Slowly, you turn to the left and see the trees magically part ways. You continue along them.",
+      "wrong_ans": "Frightened, you look the other way. Horrified, you see the face of a killer clown that kills you."
     },
     {
-      "prompt": "You encounter a fork in the maze, with a deep growling sound coming from the left and complete silence coming from the right.",
-      "ans": "0",
-      "right_ans": "You discover that the growling was coming from a giant bear, which is thankfully locked in a cage. You continue through the maze.",
-      "wrong_ans": "You enter a silent, dark room and hear a clicking sound as you step on the floor before immediately being crushed by a giant stone boulder."
+      "prompt": "You encounter a splendid waterfall. There's a rotting rope to the right which you can climb, or a underground cavern path on the left.",
+      "ans": "1",
+      "right_ans": "You climb up the rope, finding new land to explore and trek across in the maze.",
+      "wrong_ans": "You follow the path to a dead end. When you turn around, the entrance is sealed off by a boulder. You're stuck for the rest of time here."
     }
   ]
 }
