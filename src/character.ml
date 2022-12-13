@@ -15,7 +15,7 @@ let get_max_hunger =
   let p = make_pet "" in
   p.hunger
 
-let string_of_inventory sl = String.concat ", " sl
+let string_of_inventory inv = String.concat ", " inv
 
 (* prints all of the characteristics of the pet *)
 let print_stats t =
@@ -264,13 +264,13 @@ exception NoSuchItem of string
 
 let food_dict = [ ("Biscuit", 1); ("Cake", 2) ]
 
-(*gets the amt of food that is supposed to replenish*)
+(* gets the amt of food that is supposed to replenish *)
 let rec get_hunger_value item lst =
   match lst with
   | [] -> raise (NoSuchItem "NOT SUPPOSED TO HAPPEN")
   | (a, b) :: t -> if item = a then b else get_hunger_value item t
 
-(*gets food at the index the user put in*)
+(* gets food at the index the user put in *)
 let rec get_food_in_inventory idx (inv : string list) acc =
   match inv with
   | [] -> raise (NoSuchItem "There is no item at this index!")
