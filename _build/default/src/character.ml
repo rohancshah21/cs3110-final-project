@@ -30,7 +30,7 @@ let print_stats t =
 (* the first message the user sees when they open the game *)
 let welcome_message =
   print_endline
-    ("Hello Player! Welcome to Tomigatchi Simulator. In this game you will"
+    ("Hello Player! Welcome to Tamagotchi Simulator. In this game you will"
    ^ "\n"
    ^ "be taking care of your new pet! The goal of this game is to make as"
    ^ "\n"

@@ -16,13 +16,9 @@ lib: [
   "_build/install/default/lib/Character/character__Infobanks.cmi"
   "_build/install/default/lib/Character/character__Infobanks.cmt"
   "_build/install/default/lib/Character/character__Infobanks.cmx"
-  "_build/install/default/lib/Character/character__Store.cmi"
-  "_build/install/default/lib/Character/character__Store.cmt"
-  "_build/install/default/lib/Character/character__Store.cmx"
   "_build/install/default/lib/Character/dune-package"
   "_build/install/default/lib/Character/infobanks.ml"
   "_build/install/default/lib/Character/opam"
-  "_build/install/default/lib/Character/store.ml"
 ]
 libexec: [
   "_build/install/default/lib/Character/character.cmxs"
