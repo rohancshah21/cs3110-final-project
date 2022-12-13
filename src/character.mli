@@ -40,7 +40,10 @@ val choose_minigame : t -> t
 
 val intro : unit
 
-(** store functions *)
+(************ STORE FUNCTIONS ****************)
+
+val food_bank_find_cost : (int * (int * string)) list
+(** [food_bank_find_cost] stores the cost for certain foods in a list *)
 
 val lookup_store : 'a -> ('a * 'b) list -> 'b
 (** [lookup_store k bank] finds the value associated with [k] in the bank*)

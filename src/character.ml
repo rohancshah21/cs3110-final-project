@@ -37,9 +37,9 @@ let welcome_message =
    ^ "much money through minigames so you can buy food and new perks for your \
       pet! " ^ "\n" ^ "\n"
    ^ "Let's start by naming your pet. What would you like to name your pet?");
-  let x = read_line () in
+  let x () = read_line () in
 
-  make_pet x
+  make_pet (x ())
 
 (* the death message *)
 
