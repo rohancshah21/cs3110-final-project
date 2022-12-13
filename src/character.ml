@@ -1,4 +1,3 @@
-open Infobanks
 open Yojson.Basic.Util
 
 type t = {
@@ -123,9 +122,10 @@ let lookup_five_questions difficulty =
       let amt4 = lookup_one_question h4 difficulty "4" + amt3 in
       let amt5 = lookup_one_question h5 difficulty "5" + amt4 in
       print_endline ("You got " ^ string_of_int amt5 ^ "/5 questions right!");
+      let easy, medium, _ = get_questions_from_json triva_questions_json in
       let word =
-        if difficulty = easy_trivia_bank then amt5
-        else if difficulty = medium_trivia_bank then amt5 * 2
+        if difficulty = easy then amt5
+        else if difficulty = medium then amt5 * 2
         else amt5 * 3
       in
       print_endline ("Congrats! You earned $" ^ string_of_int word ^ "!");
