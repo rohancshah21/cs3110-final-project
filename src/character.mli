@@ -13,7 +13,7 @@ val string_of_inventory : string list -> string
 val print_stats : t -> unit
 (** [print_pet a] outputs the status of pet [a]. *)
 
-val welcome_message : t
+val welcome_message : unit -> t
 (** [make_pet a] makes a new pet [a]. *)
 
 val lookup : 'a -> ('a * 'b) list -> 'b

@@ -28,7 +28,7 @@ let print_stats t =
     ^ "]")
 
 (* the first message the user sees when they open the game *)
-let welcome_message =
+let welcome_message () =
   print_endline
     ("Hello Player! Welcome to Tamagotchi Simulator. In this game you will"
    ^ "\n"
@@ -37,9 +37,9 @@ let welcome_message =
    ^ "much money through minigames so you can buy food and new perks for your \
       pet! " ^ "\n" ^ "\n"
    ^ "Let's start by naming your pet. What would you like to name your pet?");
-  let x () = read_line () in
+  let x = read_line () in
 
-  make_pet (x ())
+  make_pet x
 
 (* the death message *)
 
@@ -415,5 +415,5 @@ let rec game_loop pet =
   game_loop new_t
 
 let intro =
-  let pet = welcome_message in
+  let pet = welcome_message () in
   try game_loop pet with GameOver s -> print_endline s
