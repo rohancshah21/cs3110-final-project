@@ -1086,7 +1086,14 @@ let rec user_options t =
           level = t.level;
         }
       in
-      choose_home new_t
+      choose_home
+        {
+          balance = new_t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+          level = t.level;
+        }
   | _ ->
       user_options
         {
