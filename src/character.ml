@@ -152,6 +152,7 @@ let lookup_one_question3 rand difficulty question_num =
         in
         0
 
+(** [death_exn t] displays a GameOver exception when a user loses *)
 let death_exn t =
   let new_tt =
     {
@@ -1010,24 +1011,6 @@ let rec choice_of_store_item t =
       }
 
 (* |||||||||||||||||||||||||||||OPTIONS|||||||||||||||||||||||||||||||||||||||*)
-
-(** [death_exn t] displays a GameOver exception when a user loses *)
-let death_exn t =
-  let new_tt =
-    {
-      balance = t.balance;
-      hunger = t.hunger;
-      name = t.name;
-      inventory = t.inventory;
-    }
-  in
-  GameOver
-    ("=====================================================================\n\
-     \       \n\
-     \ GAME OVER: " ^ new_tt.name
-   ^ " has unfortunately died from starvation :( \n\
-     \ \n\
-     \ =====================================================================")
 
 (** [user_options t] displays users options on the main menu *)
 let rec user_options t =
