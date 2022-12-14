@@ -320,6 +320,9 @@ let rec guess_number t secret =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level =
+          (match t.level with
+          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
       }
     else if guess < secret then (
       print_endline "Your guess is too low. Try again.";
@@ -329,6 +332,9 @@ let rec guess_number t secret =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level =
+            (match t.level with
+            | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
         }
         secret)
     else (
@@ -339,6 +345,7 @@ let rec guess_number t secret =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
         secret)
   with _ ->
@@ -348,6 +355,7 @@ let rec guess_number t secret =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
       secret
 
@@ -554,6 +562,7 @@ let rec choose_minigame t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           }
           secret_number
     | _ ->
