@@ -306,7 +306,15 @@ let rec guess_number t secret =
           inventory = t.inventory;
         }
         secret)
-  with _ -> guess_number t secret
+  with _ ->
+    guess_number
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
+      secret
 
 let trivia_minigame t =
   let new_tt =
