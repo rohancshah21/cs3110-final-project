@@ -3,9 +3,13 @@ open Character
 
 (* Test Plan: We use glass-box testing to test important and necessary functions
     from Character.ml. Not all functions from Character.ml are exposed in
-    Character.mli. This is because some functions in Character.ml are used to
-    print information to the user in the terminal, which is not necessary to
-    test. *)
+    Character.mli; only the necessary tested functions present in this file are
+     present. This is because many of our helper functions entail printing
+     values to the terminal, and the correctness of these helper functions
+     can be determined from playing the game and ensure output is as expected
+     (a glass-box principal). Thus, the functions tested here are related to
+     back-end transactions and maintenance of the pet's state, which are tested
+     by OUnit. Similarly, the terminal-based functions are manually tested. *)
 
 let trivia_tests =
   [
@@ -251,6 +255,10 @@ let store_tests =
       assert_equal [ "Biscuit, x1" ]
         (deplete_food "Biscuit"
            (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ])) );
+    ( "depleting an arbitrary food item returns the same inventory " >:: fun _ ->
+      assert_equal
+        [ "Cake, x1"; "Biscuit, x2" ]
+        (deplete_food "Cracker" [ "Cake, x1"; "Biscuit, x2" ]) );
   ]
 
 let suite =

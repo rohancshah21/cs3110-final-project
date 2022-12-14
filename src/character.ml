@@ -11,6 +11,7 @@ type t = {
   level : int * int;
 }
 
+(** [default_maze_bank] contains a default orientation of maze questions *)
 let default_maze_bank =
   [
     (2, 14, 8);
@@ -24,7 +25,10 @@ let default_maze_bank =
     (5, 0, 3);
   ]
 
+(** [maze_bank] references [default_maze_bank] *)
 let maze_bank = ref default_maze_bank
+
+(** [data_dir_prefix] allows us to use JSON files for data *)
 let data_dir_prefix = "data" ^ Filename.dir_sep
 
 (** [trivia_questions_json] loads questions from trivia_questions.json file *)
