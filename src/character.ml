@@ -104,6 +104,7 @@ let lookup_one_question1 rand difficulty question_num =
         0
 
 exception GameOver of string
+(** Raises: GameOver when the Tamagotchi dies *)
 
 (** [lookup_one_question2 rand difficulty question_num] loads a random question
     with random difficulty *)
@@ -134,7 +135,6 @@ let welcome_message () =
       pet! " ^ "\n" ^ "\n"
    ^ "Let's start by naming your pet. What would you like to name your pet?");
   let x = read_line () in
-
   make_pet x
 
 (** [lookup_one_question3 rand difficulty question_num] loads a random question
@@ -305,7 +305,7 @@ let rec choose_difficulty t =
 
 (* Generate a random number between 1 and 100 *)
 
-(* Prompt the user to guess a number *)
+(* [guess_number t secret] prompts the user to guess a number *)
 let rec guess_number t secret =
   print_endline "Guess a number between 1 and 100:";
   try
@@ -359,6 +359,7 @@ let rec guess_number t secret =
       }
       secret
 
+(** [trivia_minigame t] begins a trivia minigame *)
 let trivia_minigame t =
   let new_tt =
     {
