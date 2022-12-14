@@ -373,14 +373,14 @@ let rec choose_minigame t =
      2: Maze\n\
      Please choose an option!";
 
-  (* try *)
-  let x = read_int () in
-  match x with
-  | 0 -> t
-  | 1 -> trivia_minigame t
-  | 2 -> maze_minigame t
-  | _ -> choose_minigame t
-(* with _ -> choose_minigame t *)
+  try
+    let x = read_int () in
+    match x with
+    | 0 -> t
+    | 1 -> trivia_minigame t
+    | 2 -> maze_minigame t
+    | _ -> choose_minigame t
+  with _ -> choose_minigame t
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
 let food_bank_find_cost = [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]
