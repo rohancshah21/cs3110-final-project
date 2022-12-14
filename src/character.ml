@@ -305,7 +305,8 @@ let rec choose_difficulty t =
 
 (* Generate a random number between 1 and 100 *)
 
-(* Prompt the user to guess a number *)
+(* [guess_number t secret n_guesses_left] prompt the user to guess a number with
+   a certain amount of guesses *)
 let rec guess_number t secret n_guesses_left =
   print_endline
     ("Guess a number between 1 and 100! ("

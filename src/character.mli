@@ -56,6 +56,9 @@ val trivia_minigame : t -> t
 val choose_minigame : t -> t
 (** [choose_minigame a] lets users choose a minigame and begin the game *)
 
+val guess_number : t -> int -> int -> t
+(* [guess_number t secret n_guesses_left] prompt the user to guess a number with a certain amount of guesses *)
+
 (************ STORE FUNCTIONS ****************)
 
 val food_bank_find_cost : (int * (int * string)) list

@@ -26,6 +26,21 @@ let trivia_tests =
     ( "looking up question 4 with no difficulty raises an error" >:: fun _ ->
       assert_raises (Failure "Oops!") (fun () -> lookup_one_question5 1 [] "5")
     );
+    ( "looking up question 4 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question5 1 [] "1")
+    );
+    ( "looking up question 3 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question4 1 [] "2")
+    );
+    ( "looking up question 2 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question3 1 [] "4")
+    );
+    ( "looking up question 1 with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question2 1 [] "3")
+    );
+    ( "looking up 1 questions with no difficulty raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () -> lookup_one_question1 1 [] "5")
+    );
     ( "looking up question 5 with no difficulty raises an error" >:: fun _ ->
       assert_raises (Invalid_argument "Random.int") (fun () ->
           lookup_five_questions []) );
@@ -51,6 +66,9 @@ let store_tests =
     ( "looking up the cost of a cake key finds the entry in the food bank"
     >:: fun _ ->
       assert_equal (3, "Cake x1") (lookup_store 2 food_bank_find_cost) );
+    ( "looking up the cost of an invalid key raises an error" >:: fun _ ->
+      assert_raises (Failure "Oops!") (fun () ->
+          lookup_store 3 food_bank_find_cost) );
     ( "add test for add_item_to_inventory with a expanded inventory \
        sequentially works properly"
     >:: fun _ ->
