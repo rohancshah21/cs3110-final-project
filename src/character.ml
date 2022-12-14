@@ -496,7 +496,13 @@ let rec food_item t =
       inventory = t.inventory;
     }
   in
-  print_stats new_tt;
+  print_stats
+    {
+      balance = new_tt.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    };
   print_endline
     "Welcome to the Grocery Store!\n\
      Here are your food options:\n\
