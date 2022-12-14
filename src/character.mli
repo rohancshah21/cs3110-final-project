@@ -27,7 +27,7 @@ val maze_encounters_json : Yojson.Basic.t
 (** [maze_questions_json] loads questions from maze_questions.json file *)
 
 val parse_questions : Yojson.Basic.t -> int * (string * string * string)
-(* [parse_questions j] finds necessary questions from the trivia_questions JSON
+(** [parse_questions j] finds necessary questions from the trivia_questions JSON
    file *)
 
 val parse_encounters : Yojson.Basic.t -> string * string * string * string
@@ -48,7 +48,7 @@ val get_questions_from_json :
   (int * (string * string * string)) list
   * (int * (string * string * string)) list
   * (int * (string * string * string)) list
-(* [get_questions_from_json j] finds necessary questions from the
+(** [get_questions_from_json j] finds necessary questions from the
     trivia_questions JSON file based on difficulty *)
 
 val string_of_inventory : string list -> string
@@ -109,7 +109,7 @@ val choose_minigame : t -> t
 (** [choose_minigame t] lets users choose from set of implemented minigames *)
 
 val guess_number : t -> int -> int -> t
-(* [guess_number t secret n_guesses_left] prompt the user to guess a number with
+(** [guess_number t secret n_guesses_left] prompt the user to guess a number with
    a certain amount of guesses *)
 
 val start_maze : t -> t
