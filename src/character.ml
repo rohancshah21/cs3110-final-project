@@ -689,12 +689,26 @@ let rec home_item t =
       }
   | i -> (
       try
-        let eat = feed_item i t in
+        let eat =
+          feed_item i
+            {
+              balance = t.balance;
+              hunger = t.hunger;
+              name = t.name;
+              inventory = t.inventory;
+            }
+        in
         print_endline "\n*gulps* YUMMM!";
         eat
       with NoSuchItem s ->
         print_endline s;
-        home_item t)
+        home_item
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          })
 
 let rec choose_store t =
   let new_tt =
@@ -710,7 +724,23 @@ let rec choose_store t =
 
 let rec choose_home_activity t =
   let x = read_int () in
-  match x with 1 -> home_item t | _ -> choose_home_activity t
+  match x with
+  | 1 ->
+      home_item
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+  | _ ->
+      choose_home_activity
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
 
 let rec choose_home t =
   print_endline "\n";
