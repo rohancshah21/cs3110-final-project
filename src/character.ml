@@ -1,5 +1,8 @@
 open Yojson.Basic.Util
 
+(** MODULE DESCRIPTION: Contains all code for making a Tamagotchi pet, 
+    navigating through minigames, the store, menu, and home *)
+
 type t = {
   balance : int; (* current balance *)
   hunger : int; (* current hunger level *)
