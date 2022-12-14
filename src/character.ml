@@ -268,6 +268,46 @@ let rec choose_difficulty t =
           inventory = t.inventory;
         }
 
+(* Generate a random number between 1 and 100 *)
+
+(* Prompt the user to guess a number *)
+let rec guess_number t secret =
+  print_endline "Guess a number between 1 and 100:";
+  try
+    let guess = read_int () in
+    if guess = secret then
+      let _ =
+        print_endline
+          "\nCONGRATS! You've guessed the correct number! Your reward is $1!"
+      in
+      {
+        balance = t.balance + 1;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
+    else if guess < secret then (
+      print_endline "Your guess is too low. Try again.";
+      guess_number
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+        secret)
+    else (
+      print_endline "Your guess is too high. Try again.";
+      guess_number
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+        secret)
+  with _ -> guess_number t secret
+
 let trivia_minigame t =
   let new_tt =
     {
@@ -410,8 +450,9 @@ let rec choose_minigame t =
     "Welcome to the minigame menu!\n\
      Here are your minigame options:\n\
      0: Main Menu\n\
-     1: Trivia\n\
-     2: Maze\n\
+     1: Trivia ($ - $$$)\n\
+     2: Maze ($)\n\
+     3: Number Guesser ($) \n\
      Please choose an option!";
 
   try
@@ -434,6 +475,16 @@ let rec choose_minigame t =
             name = t.name;
             inventory = t.inventory;
           }
+    | 3 ->
+        let secret_number = Random.int 100 + 1 in
+        guess_number
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
+          secret_number
     | _ ->
         choose_minigame
           {
