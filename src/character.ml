@@ -533,7 +533,13 @@ let rec food_item t =
       in
       if !new_bal < 0 then
         let _ = print_endline "CANNOT AFFORD" in
-        food_item t
+        food_item
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
       else
         let new_t =
           {
@@ -841,8 +847,6 @@ let rec user_options t =
           name = t.name;
           inventory = t.inventory;
         }
-
-(* |||||||||||||||||||||||||||||START GAME|||||||||||||||||||||||||||||||||||||||||*)
 
 let rec game_loop pet =
   let new_t = user_options pet in
