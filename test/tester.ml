@@ -51,9 +51,13 @@ let store_tests =
     ( "looking up the cost of a cake key finds the entry in the food bank"
     >:: fun _ ->
       assert_equal (3, "Cake x1") (lookup_store 2 food_bank_find_cost) );
-    (* ( "adding an item to an inventory is correctly stored in the list"
-       >:: fun _ ->
-         assert_equal [ "Biscuit x1" ] (add_item_to_inventory "Biscuit" []) ); *)
+    ( "add test for add_item_to_inventory with a expanded inventory \
+       sequentially works properly"
+    >:: fun _ ->
+      assert_equal
+        [ "Biscuit x2"; "Cake x2" ]
+        (add_item_to_inventory "Cake x1"
+           (add_item_to_inventory "Biscuit x1" [ "Biscuit x1"; "Cake x1" ])) );
     ( "cannot add over 10 items to a list" >:: fun _ ->
       assert_raises (Failure "int_of_string") (fun () ->
           add_item_to_inventory "Biscuit"
@@ -84,6 +88,13 @@ let store_tests =
               "Biscuit";
               "Cake";
             ]) );
+    ( "add test for add_item_to_inventory with single entry" >:: fun _ ->
+      assert_equal [ "Cake x2" ] (if_not_in_inventory "Cake x1" [ "Cake x1" ])
+    );
+    ( "add test for add_item_to_inventory with a expanded inventory" >:: fun _ ->
+      assert_equal
+        [ "Biscuit x2"; "Cake x1" ]
+        (if_not_in_inventory "Biscuit x1" [ "Biscuit x1"; "Cake x1" ]) );
     ( "adding an item to something not in the inventory initially is correctly \
        stored in the list"
     >:: fun _ -> assert_equal [ "Biscuit" ] (if_not_in_inventory "Biscuit" [])
@@ -118,6 +129,20 @@ let store_tests =
               "Biscuit";
               "Cake";
             ]) );
+    ( "add test for if_not_in_inventory" >:: fun _ ->
+      assert_equal [ "Biscuit x2" ]
+        (if_not_in_inventory "Biscuit x1" [ "Biscuit x1" ]) );
+    ( "add test for if_not_in_inventory with a expanded inventory" >:: fun _ ->
+      assert_equal
+        [ "Biscuit x1"; "Cake x2" ]
+        (if_not_in_inventory "Cake x1" [ "Biscuit x1"; "Cake x1" ]) );
+    ( "add test for if_not_in_inventory with a expanded inventory sequentially \
+       works properly"
+    >:: fun _ ->
+      assert_equal
+        [ "Biscuit x2"; "Cake x2" ]
+        (if_not_in_inventory "Biscuit x1"
+           (if_not_in_inventory "Cake x1" [ "Biscuit x1"; "Cake x1" ])) );
     ( "enumerating an empty inventory returns an empty list" >:: fun _ ->
       assert_equal [] (enumerate_inventory [] 1) );
     ( "enumerating an inventory is printed properly" >:: fun _ ->
@@ -158,6 +183,10 @@ let store_tests =
     >:: fun _ ->
       assert_equal [ "Biscuit, x2" ]
         (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ]) );
+    ( "depleting food sequentially returns the correct list" >:: fun _ ->
+      assert_equal [ "Biscuit, x1" ]
+        (deplete_food "Biscuit"
+           (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ])) );
   ]
 
 let maze_tests =
