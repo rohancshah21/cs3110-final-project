@@ -171,11 +171,8 @@ let death_exn t =
      \ \n\
      \ =====================================================================")
 
-let rec lookup k difficulty =
-  match difficulty with
-  | [] -> failwith "Oops!"
-  | (k', v) :: t -> if k = k' then v else lookup k t
-
+(** [lookup_one_question4 rand difficulty question_num] loads a random question
+    with random difficulty *)
 let lookup_one_question4 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
