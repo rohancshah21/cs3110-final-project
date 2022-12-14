@@ -114,6 +114,30 @@ let store_tests =
               "Biscuit";
               "Biscuit";
             ]) );
+    ( "cannot add over 10 items of two types to a list" >:: fun _ ->
+      assert_raises (Failure "int_of_string") (fun () ->
+          if_not_in_inventory "Biscuit"
+            [
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Biscuit";
+              "Cake";
+              "Cake";
+              "Cake";
+              "Cake";
+              "Cake";
+              "Cake";
+              "Cake";
+              "Cake";
+              "Cake";
+            ]) );
     ( "cannot add over 10 items to a list with varying food" >:: fun _ ->
       assert_raises (Failure "int_of_string") (fun () ->
           if_not_in_inventory "Biscuit"

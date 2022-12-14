@@ -377,10 +377,38 @@ let rec choose_minigame t =
     let x = read_int () in
     match x with
     | 0 -> t
-    | 1 -> trivia_minigame t
-    | 2 -> maze_minigame t
-    | _ -> choose_minigame t
-  with _ -> choose_minigame t
+    | 1 ->
+        trivia_minigame
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
+    | 2 ->
+        maze_minigame
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
+    | _ ->
+        choose_minigame
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
+  with _ ->
+    choose_minigame
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
 let food_bank_find_cost = [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]
@@ -445,7 +473,13 @@ let rec food_item t =
   in
   let x = read_int () in
   match x with
-  | 0 -> t
+  | 0 ->
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
   | 1 ->
       let y = lookup_store 1 food_bank_find_cost in
       let new_bal = ref (t.balance - fst y) in
@@ -481,7 +515,13 @@ let rec food_item t =
       in
       if !new_bal < 0 then
         let _ = print_endline "CANNOT AFFORD" in
-        food_item t
+        food_item
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
       else
         let new_t =
           {
@@ -492,7 +532,14 @@ let rec food_item t =
           }
         in
         new_t
-  | _ -> food_item t
+  | _ ->
+      food_item
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
 
 let rec enumerate_inventory (inv : string list) (acc : int) =
   match inv with
@@ -586,7 +633,13 @@ let rec home_item t =
     ^ "\n0: Main Menu \nPlease choose an option!");
   let x = read_int () in
   match x with
-  | 0 -> t
+  | 0 ->
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
   | i -> (
       try
         let eat = feed_item i t in
@@ -628,7 +681,22 @@ let rec choose_home t =
      Here are your home options:\n\
      1: Feed\n\
      Please choose an option!";
-  try choose_home_activity t with _ -> choose_home t
+  try
+    choose_home_activity
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
+  with _ ->
+    choose_home
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
 
 let rec choice_of_store_item t =
   print_endline "\n";
@@ -646,7 +714,22 @@ let rec choice_of_store_item t =
      Here are your store options:\n\
      1: Food\n\
      Please choose an option!";
-  try choose_store t with _ -> choice_of_store_item t
+  try
+    choose_store
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
+  with _ ->
+    choice_of_store_item
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
 
 (* |||||||||||||||||||||||||||||OPTIONS|||||||||||||||||||||||||||||||||||||||||*)
 let rec user_options t =
@@ -709,7 +792,14 @@ let rec user_options t =
         }
       in
       choose_home new_t
-  | _ -> user_options t
+  | _ ->
+      user_options
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
 
 (* |||||||||||||||||||||||||||||START GAME|||||||||||||||||||||||||||||||||||||||||*)
 
