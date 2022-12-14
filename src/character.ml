@@ -306,8 +306,11 @@ let rec choose_difficulty t =
 (* Generate a random number between 1 and 100 *)
 
 (* Prompt the user to guess a number *)
-let rec guess_number t secret =
-  print_endline "Guess a number between 1 and 100:";
+let rec guess_number t secret n_guesses_left =
+  print_endline
+    ("Guess a number between 1 and 100! ("
+    ^ string_of_int n_guesses_left
+    ^ " guesses remaining):");
   try
     let guess = read_int () in
     if guess = secret then
@@ -317,7 +320,17 @@ let rec guess_number t secret =
       in
       {
         balance = t.balance + 1;
-        hunger = t.hunger;
+        hunger = t.hunger - 1;
+        name = t.name;
+        inventory = t.inventory;
+        level =
+          (match t.level with
+          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
+      }
+    else if n_guesses_left = 0 then
+      {
+        balance = t.balance;
+        hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
         level =
@@ -336,7 +349,7 @@ let rec guess_number t secret =
             (match t.level with
             | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
         }
-        secret)
+        secret (n_guesses_left - 1))
     else (
       print_endline "Your guess is too high. Try again.";
       guess_number
@@ -347,7 +360,7 @@ let rec guess_number t secret =
           inventory = t.inventory;
           level = t.level;
         }
-        secret)
+        secret (n_guesses_left - 1))
   with _ ->
     guess_number
       {
@@ -357,7 +370,7 @@ let rec guess_number t secret =
         inventory = t.inventory;
         level = t.level;
       }
-      secret
+      secret (n_guesses_left - 1)
 
 let trivia_minigame t =
   let new_tt =
@@ -564,7 +577,7 @@ let rec choose_minigame t =
             inventory = t.inventory;
             level = t.level;
           }
-          secret_number
+          secret_number 8
     | _ ->
         choose_minigame
           {
