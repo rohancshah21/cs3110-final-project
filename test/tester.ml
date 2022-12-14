@@ -173,6 +173,10 @@ let store_tests =
       assert_equal
         [ "1: Biscuit"; "2: Cake" ]
         (enumerate_inventory [ "Biscuit"; "Cake" ] 1) );
+    ( "an extraneous item is still enumerated for testing purposes" >:: fun _ ->
+      assert_equal
+        [ "1: Biscuit"; "2: Cake"; "3: Extra" ]
+        (enumerate_inventory [ "Biscuit"; "Cake"; "Extra" ] 1) );
     ( "the food dictionary is properly printed" >:: fun _ ->
       assert_equal [ ("Biscuit", 1); ("Cake", 2) ] food_dict );
     ( "the value of Biscuit is 1" >:: fun _ ->
@@ -213,17 +217,7 @@ let store_tests =
            (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ])) );
   ]
 
-let maze_tests =
-  [
-    ( "depleting food from an inventory correctly decrements" >:: fun _ ->
-      assert_equal
-        [ "Cake, x1"; "Biscuit, x1" ]
-        (deplete_food "Biscuit" [ "Cake, x1"; "Biscuit, x2" ]) );
-    ( "depleting food from a single value of food then removes it from the list"
-    >:: fun _ ->
-      assert_equal [ "Biscuit, x2" ]
-        (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ]) );
-  ]
+let maze_tests = []
 
 let suite =
   "test suite for CS 3110 Final Project"
