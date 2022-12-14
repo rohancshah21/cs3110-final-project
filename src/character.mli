@@ -173,7 +173,7 @@ val deplete_food : string -> string list -> string list
 (** [deplete_food item inventory] removes [item] from the [inventory] counter and returns the updated [inventory] *)
 
 val refill_hunger : int -> t -> int
-(* [refill_hunger amt t] adds hunger points of [amt] if a pet is fed *)
+(** [refill_hunger amt t] adds hunger points of [amt] if a pet is fed *)
 
 val feed_item : int -> t -> t
 (** [feed_item idx t] invokes [refill_hunger] to feed the pet and update its record along with updating any according balances *)
