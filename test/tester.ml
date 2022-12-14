@@ -2,14 +2,14 @@ open OUnit2
 open Character
 
 (* Test Plan: We use glass-box testing to test important and necessary functions
-    from Character.ml. Not all functions from Character.ml are exposed in
-    Character.mli; only the necessary tested functions present in this file are
-     present. This is because many of our helper functions entail printing
-     values to the terminal, and the correctness of these helper functions
-     can be determined from playing the game and ensure output is as expected
-     (a glass-box principal). Thus, the functions tested here are related to
-     back-end transactions and maintenance of the pet's state, which are tested
-     by OUnit. Similarly, the terminal-based functions are manually tested. *)
+    from Character.ml. However, not all functions present in Character.mli are
+    tested in this file. This is because many of our helper functions entail
+    printing values to the terminal, and the correctness of these helper
+    functions can be determined from playing the game and ensure output is as
+    expected (a glass-box principal). Thus, the functions tested here are
+    related to back-end transactions and maintenance of the pet's state,
+    which are tested by OUnit. Similarly, the terminal-based functions are
+    manually tested. *)
 
 let trivia_tests =
   [

@@ -1,8 +1,5 @@
 open Yojson.Basic.Util
 
-(** MODULE DESCRIPTION: Contains all code for making a Tamagotchi pet, 
-    navigating through minigames, the store, menu, and home *)
-
 type t = {
   balance : int; (* current balance *)
   hunger : int; (* current hunger level *)
@@ -11,7 +8,6 @@ type t = {
   level : int * int;
 }
 
-(** [default_maze_bank] contains a default orientation of maze questions *)
 let default_maze_bank =
   [
     (2, 14, 8);
@@ -25,26 +21,18 @@ let default_maze_bank =
     (5, 0, 3);
   ]
 
-(** [maze_bank] references [default_maze_bank] *)
 let maze_bank = ref default_maze_bank
-
-(** [data_dir_prefix] allows us to use JSON files for data *)
 let data_dir_prefix = "data" ^ Filename.dir_sep
 
-(** [trivia_questions_json] loads questions from trivia_questions.json file *)
 let trivia_questions_json =
   Yojson.Basic.from_file (data_dir_prefix ^ "trivia_questions.json")
 
-(** [maze_questions_json] loads questions from maze_questions.json file *)
 let maze_encounters_json =
   Yojson.Basic.from_file (data_dir_prefix ^ "maze_encounters.json")
 
-(* [make_pet] makes a new pet with the given name *)
 let make_pet pet_name =
   { balance = 0; hunger = 3; name = pet_name; inventory = []; level = (0, 0) }
 
-(* [parse_questions j] finds necessary questions from the trivia_questions JSON
-   file *)
 let parse_questions j =
   let question =
     ( j |> member "id" |> to_int,
@@ -69,15 +57,12 @@ let get_questions_from_json json =
 
   (easy_questions, medium_questions, hard_questions)
 
-(** [get_max_hunger] returns the max hunger of a pet *)
 let get_max_hunger =
   let p = make_pet "" in
   p.hunger
 
-(** [string_of_inventory inv] returns a string representation of [inv] *)
 let string_of_inventory inv = String.concat ", " inv
 
-(* [print_stats t] prints all of the characteristics of the pet *)
 let print_stats t =
   let a, b = t.level in
   let new_tt =
@@ -97,15 +82,11 @@ let print_stats t =
     ^ string_of_inventory t.inventory
     ^ "] XP = " ^ string_of_int a ^ " " ^ string_of_int b ^ "/1000")
 
-(** [lookup k difficulty] looks for corresponding questions with certain 
-    difficulty*)
 let rec lookup k difficulty =
   match difficulty with
   | [] -> failwith "Oops!"
   | (k', v) :: t -> if k = k' then v else lookup k t
 
-(** [lookup_one_question1 rand difficulty question_num] loads a random question
-    with random difficulty *)
 let lookup_one_question1 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -123,10 +104,7 @@ let lookup_one_question1 rand difficulty question_num =
         0
 
 exception GameOver of string
-(** Raises: GameOver when the Tamagotchi dies *)
 
-(** [lookup_one_question2 rand difficulty question_num] loads a random question
-    with selected difficulty *)
 let lookup_one_question2 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -143,7 +121,6 @@ let lookup_one_question2 rand difficulty question_num =
         in
         0
 
-(** [welcome_message ()] is the initial message at game start *)
 let welcome_message () =
   print_endline
     ("Hello Player! Welcome to Tamagotchi Simulator. In this game you will"
@@ -156,9 +133,6 @@ let welcome_message () =
   let x = read_line () in
   make_pet x
 
-(** [lookup_one_question3 rand difficulty question_num] loads a question
-    with selected
-     difficulty *)
 let lookup_one_question3 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -175,7 +149,6 @@ let lookup_one_question3 rand difficulty question_num =
         in
         0
 
-(** [death_exn t] displays a GameOver exception when a user loses *)
 let death_exn t =
   let new_tt =
     {
@@ -194,8 +167,6 @@ let death_exn t =
      \ \n\
      \ =====================================================================")
 
-(** [lookup_one_question4 rand difficulty question_num] loads a random question
-    with selected difficulty *)
 let lookup_one_question4 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -212,8 +183,6 @@ let lookup_one_question4 rand difficulty question_num =
         in
         0
 
-(** [lookup_one_question5 rand difficulty question_num] loads a random question
-    with selected difficulty *)
 let lookup_one_question5 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -230,7 +199,6 @@ let lookup_one_question5 rand difficulty question_num =
         in
         0
 
-(** [five_random_numbers difficulty acc] puts five random numbers into [acc] *)
 let rec five_random_numbers difficulty acc =
   Random.self_init ();
   let x = Random.int (List.length difficulty) in
@@ -238,8 +206,6 @@ let rec five_random_numbers difficulty acc =
   else if List.mem x acc = false then five_random_numbers difficulty (x :: acc)
   else five_random_numbers difficulty acc
 
-(** [lookup_five_questions difficulty] finds five questions from the trivia 
-    bank of [difficulty] *)
 let lookup_five_questions difficulty =
   let int_lst = five_random_numbers difficulty [] in
   match int_lst with
@@ -262,7 +228,6 @@ let lookup_five_questions difficulty =
       amt5
   | _ -> failwith "oops!"
 
-(** [choose_difficulty t] enables users to choose question difficulty *)
 let rec choose_difficulty t =
   let new_tt =
     {
@@ -324,10 +289,6 @@ let rec choose_difficulty t =
           level = t.level;
         }
 
-(* Generate a random number between 1 and 100 *)
-
-(* [guess_number t secret n_guesses_left] prompt the user to guess a number with
-   a certain amount of guesses *)
 let rec guess_number t secret n_guesses_left =
   print_endline
     ("Guess a number between 1 and 100! ("
@@ -397,7 +358,6 @@ let rec guess_number t secret n_guesses_left =
       }
       secret (n_guesses_left - 1)
 
-(** [trivia_minigame t] begins a trivia minigame *)
 let trivia_minigame t =
   let new_tt =
     {
@@ -422,16 +382,12 @@ let trivia_minigame t =
       level = t.level;
     }
 
-(** [parse_encounters encounter] finds necessary encounters from the
-   maze_encounters JSON file *)
 let parse_encounters encounter =
   ( encounter |> member "prompt" |> to_string,
     encounter |> member "ans" |> to_string,
     encounter |> member "right_ans" |> to_string,
     encounter |> member "wrong_ans" |> to_string )
 
-(** [generate_encounters json] generates 5 random encounters from the 
-    maze_encounters JSON file *)
 let generate_encounters json =
   let all_encounters =
     json |> member "encounters" |> to_list |> List.map parse_encounters
@@ -453,8 +409,6 @@ let generate_encounters json =
         List.nth all_encounters c;
       ]
 
-(** [iter_encounters encounters t] iterates through the generated [encounters]
-    and prompts users to make choices *)
 let rec iter_encounters encounters t =
   match encounters with
   | [] ->
@@ -519,7 +473,6 @@ let rec iter_encounters encounters t =
                 })
           | _ -> failwith ""))
 
-(** [start_maze t] starts a new maze minigame *)
 let start_maze t =
   let new_tt =
     {
@@ -540,7 +493,6 @@ let start_maze t =
       level = t.level;
     }
 
-(** [maze_minigame t] starts a new maze minigame *)
 let maze_minigame t =
   let new_tt =
     {
@@ -563,7 +515,6 @@ let maze_minigame t =
       level = t.level;
     }
 
-(** [choose_minigame t] lets users choose from set of implemented minigames *)
 let rec choose_minigame t =
   print_endline "\n";
   print_endline
@@ -630,19 +581,15 @@ let rec choose_minigame t =
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
 
-(** [food_bank_find_cost] is the costs associated with various foods *)
 let food_bank_find_cost = [ (1, (1, "Biscuit x1")); (2, (3, "Cake x1")) ]
 
-(** [lookup_store k bank] explores the store when the user clicks *)
 let lookup_store k bank =
   match bank with
   | [] -> failwith "Oops!"
   | (k', v) :: t -> if k = k' then v else lookup k t
 
 exception ItemLimit of string
-(** Raise: ItemLimit when inventory exceeds capacity *)
 
-(** [add_item_to_inventory i lst] adds an item [i] to [lst] inventory *)
 let rec add_item_to_inventory (i : string) (lst : string list) : string list =
   match lst with
   | [] -> []
@@ -662,8 +609,6 @@ let rec add_item_to_inventory (i : string) (lst : string list) : string list =
           new_word :: add_item_to_inventory i t
       else h :: add_item_to_inventory i t
 
-(** [if_not_in_inventory i lst] checks if an item [i] is not in [lst], and
-    adds *)
 let if_not_in_inventory i lst =
   if
     lst
@@ -671,7 +616,6 @@ let if_not_in_inventory i lst =
   then i :: lst
   else add_item_to_inventory i lst
 
-(** [food_item t] lets users see various food options for their pet *)
 let rec food_item t =
   let new_tt =
     {
@@ -788,33 +732,25 @@ let rec food_item t =
           level = t.level;
         }
 
-(** [enumerate_inventory inv acc] prints out inventory with numbered items*)
 let rec enumerate_inventory (inv : string list) (acc : int) =
   match inv with
   | [] -> []
   | h :: t -> (string_of_int acc ^ ": " ^ h) :: enumerate_inventory t (acc + 1)
 
 exception NoSuchItem of string
-(** Raise: NoSuchItem when user tries to choose an item not in the store*)
 
-(** [food_dict] is a dictionary of foods and their hunger value *)
 let food_dict = [ ("Biscuit", 1); ("Cake", 2) ]
 
-(* [get_hunger_value item lst] gets the amount of food that [item] is
-   supposed to replenish *)
 let rec get_hunger_value item lst =
   match lst with
   | [] -> raise (NoSuchItem "NOT SUPPOSED TO HAPPEN")
   | (a, b) :: t -> if item = a then b else get_hunger_value item t
 
-(* [get_food_in_inventory idx inv acc] gets the food item as [idx] in [inv] *)
 let rec get_food_in_inventory idx (inv : string list) acc =
   match inv with
   | [] -> raise (NoSuchItem "There is no item at this index!")
   | h :: t -> if idx = acc then h else get_food_in_inventory idx t (acc + 1)
 
-(* [deplete_food item inventory] decrements the amount of a certain [item]
-   in [inventory] *)
 let rec deplete_food item inventory =
   match inventory with
   | [] -> []
@@ -831,7 +767,6 @@ let rec deplete_food item inventory =
           new_word :: deplete_food item t
       else h :: deplete_food item t
 
-(* [refill_hunger amt t] adds hunger points of [amt] if a pet is fed *)
 let refill_hunger amt t =
   let new_tt =
     {
@@ -845,8 +780,6 @@ let refill_hunger amt t =
   let new_hunger = new_tt.hunger + amt in
   if new_hunger >= get_max_hunger then get_max_hunger else new_hunger
 
-(* [feed_item idx t] feeds the food item at [idx] to the pet and updates stats 
-   *)
 let feed_item idx t =
   let new_tt =
     {
@@ -873,7 +806,6 @@ let feed_item idx t =
     level = t.level;
   }
 
-(** [home_item t] brings users to the home to feed their pet if they want *)
 let rec home_item t =
   let new_tt =
     {
@@ -926,7 +858,6 @@ let rec home_item t =
             level = t.level;
           })
 
-(** [choose_store t] lets users choose a store operation *)
 let rec choose_store t =
   let new_tt =
     {
@@ -958,7 +889,6 @@ let rec choose_store t =
           level = t.level;
         }
 
-(** [choose_home_activity t] lets users choose a home operation *)
 let rec choose_home_activity t =
   let x = read_int () in
   match x with
@@ -981,7 +911,6 @@ let rec choose_home_activity t =
           level = t.level;
         }
 
-(** [choose_home t] brings users home and displays corresponding operations *)
 let rec choose_home t =
   print_endline "\n";
   let new_tt =
@@ -1025,8 +954,6 @@ let rec choose_home t =
         level = t.level;
       }
 
-(** [choice_of_store_item t] lets users choose what items they can use in the
-    store *)
 let rec choice_of_store_item t =
   print_endline "\n";
   let new_tt =
@@ -1065,7 +992,6 @@ let rec choice_of_store_item t =
 
 (* |||||||||||||||||||||||||||||OPTIONS|||||||||||||||||||||||||||||||||||||||*)
 
-(** [user_options t] displays users options on the main menu *)
 let rec user_options t =
   print_endline "\n";
   let new_tt =
@@ -1148,7 +1074,6 @@ let rec user_options t =
           level = t.level;
         }
 
-(** [game_loop pet] continues the game for the [pet] until failure *)
 let rec game_loop pet =
   let new_t = user_options pet in
   game_loop
@@ -1160,7 +1085,6 @@ let rec game_loop pet =
       level = new_t.level;
     }
 
-(** [intro ()] starts a game *)
 let intro () =
   let pet = welcome_message () in
   try game_loop pet with GameOver s -> print_endline s
