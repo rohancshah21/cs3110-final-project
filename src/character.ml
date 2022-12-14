@@ -79,6 +79,7 @@ let string_of_inventory inv = String.concat ", " inv
 
 (* [print_stats t] prints all of the characteristics of the pet *)
 let print_stats t =
+  let a, b = t.level in
   let new_tt =
     {
       balance = t.balance;
@@ -94,7 +95,7 @@ let print_stats t =
     ^ string_of_int get_max_hunger
     ^ " Inventory = ["
     ^ string_of_inventory t.inventory
-    ^ "]")
+    ^ "] XP = " ^ string_of_int a ^ " " ^ string_of_int b ^ "/1000")
 
 (** [lookup k difficulty] looks for corresponding questions with certain 
     difficulty*)
@@ -125,7 +126,7 @@ exception GameOver of string
 (** Raises: GameOver when the Tamagotchi dies *)
 
 (** [lookup_one_question2 rand difficulty question_num] loads a random question
-    with random difficulty *)
+    with selected difficulty *)
 let lookup_one_question2 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -155,8 +156,9 @@ let welcome_message () =
   let x = read_line () in
   make_pet x
 
-(** [lookup_one_question3 rand difficulty question_num] loads a random question
-    with random difficulty *)
+(** [lookup_one_question3 rand difficulty question_num] loads a question
+    with selected
+     difficulty *)
 let lookup_one_question3 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -193,7 +195,7 @@ let death_exn t =
      \ =====================================================================")
 
 (** [lookup_one_question4 rand difficulty question_num] loads a random question
-    with random difficulty *)
+    with selected difficulty *)
 let lookup_one_question4 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -211,7 +213,7 @@ let lookup_one_question4 rand difficulty question_num =
         0
 
 (** [lookup_one_question5 rand difficulty question_num] loads a random question
-    with random difficulty *)
+    with selected difficulty *)
 let lookup_one_question5 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -230,6 +232,7 @@ let lookup_one_question5 rand difficulty question_num =
 
 (** [five_random_numbers difficulty acc] puts five random numbers into [acc] *)
 let rec five_random_numbers difficulty acc =
+  Random.self_init ();
   let x = Random.int (List.length difficulty) in
   if List.length acc = 5 then acc
   else if List.mem x acc = false then five_random_numbers difficulty (x :: acc)
@@ -345,9 +348,13 @@ let rec guess_number t secret n_guesses_left =
         inventory = t.inventory;
         level =
           (match t.level with
-          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
+          | f, s -> if s < 900 then (f, s + 200) else (f + 1, s mod 1000));
       }
     else if n_guesses_left = 0 then
+      let _ =
+        print_endline
+          "\nSORRY! You've run out of guesses! Better luck next time!"
+      in
       {
         balance = t.balance;
         hunger = t.hunger - 1;
@@ -365,9 +372,7 @@ let rec guess_number t secret n_guesses_left =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
-          level =
-            (match t.level with
-            | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
+          level = t.level;
         }
         secret (n_guesses_left - 1))
     else (
@@ -462,7 +467,7 @@ let rec iter_encounters encounters t =
         inventory = t.inventory;
         level =
           (match t.level with
-          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
+          | f, s -> if s < 900 then (f, s + 200) else (f + 1, s mod 1000));
       }
   | h :: tail -> (
       match h with
@@ -593,6 +598,7 @@ let rec choose_minigame t =
             level = t.level;
           }
     | 3 ->
+        Random.self_init ();
         let secret_number = Random.int 100 + 1 in
         guess_number
           {
