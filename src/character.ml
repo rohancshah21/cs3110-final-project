@@ -720,7 +720,23 @@ let rec choose_store t =
     }
   in
   let x = read_int () in
-  match x with 1 -> food_item new_tt | _ -> choose_store new_tt
+  match x with
+  | 1 ->
+      food_item
+        {
+          balance = new_tt.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+  | _ ->
+      choose_store
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
 
 let rec choose_home_activity t =
   let x = read_int () in
@@ -752,7 +768,13 @@ let rec choose_home t =
       inventory = t.inventory;
     }
   in
-  print_stats new_tt;
+  print_stats
+    {
+      balance = new_tt.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    };
   print_endline
     "Welcome to the home menu!\n\
      Here are your home options:\n\
@@ -880,7 +902,13 @@ let rec user_options t =
 
 let rec game_loop pet =
   let new_t = user_options pet in
-  game_loop new_t
+  game_loop
+    {
+      balance = new_t.balance;
+      hunger = new_t.hunger;
+      name = new_t.name;
+      inventory = new_t.inventory;
+    }
 
 let intro () =
   let pet = welcome_message () in
