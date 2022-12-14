@@ -259,7 +259,14 @@ let rec choose_difficulty t =
         name = t.name;
         inventory = t.inventory;
       }
-  | _ -> choose_difficulty t
+  | _ ->
+      choose_difficulty
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
 
 let trivia_minigame t =
   let new_tt =
@@ -275,7 +282,13 @@ let trivia_minigame t =
   print_endline
     "You get money based on how many of the five questions you get correct! \
      Good luck!";
-  choose_difficulty t
+  choose_difficulty
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
 
 let parse_encounters encounter =
   ( encounter |> member "prompt" |> to_string,
@@ -354,14 +367,42 @@ let rec iter_encounters encounters t =
           | _ -> failwith ""))
 
 let start_maze t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   let encounters = generate_encounters maze_encounters_json in
-  iter_encounters encounters t
+  iter_encounters encounters
+    {
+      balance = new_tt.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
 
 let maze_minigame t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
+  in
   print_endline "\n";
-  print_endline ("Hey " ^ t.name ^ "'s Owner! Welcome to Maze!");
+  print_endline ("Hey " ^ new_tt.name ^ "'s Owner! Welcome to Maze!");
   print_endline "Find the prize in the maze for some money. Good luck!\n";
-  start_maze t
+  start_maze
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+    }
 
 let rec choose_minigame t =
   print_endline "\n";
