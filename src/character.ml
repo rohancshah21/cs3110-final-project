@@ -335,7 +335,7 @@ let rec guess_number t secret n_guesses_left =
           "\nCONGRATS! You've guessed the correct number! Your reward is $1!"
       in
       {
-        balance = t.balance + 1;
+        balance = t.balance + 5;
         hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
