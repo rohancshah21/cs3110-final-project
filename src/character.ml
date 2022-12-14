@@ -11,6 +11,20 @@ type t = {
   level : int * int;
 }
 
+let default_maze_bank =
+  [
+    (2, 14, 8);
+    (5, 9, 1);
+    (16, 0, 8);
+    (9, 10, 12);
+    (4, 8, 13);
+    (7, 15, 2);
+    (1, 6, 11);
+    (14, 6, 3);
+    (5, 0, 3);
+  ]
+
+let maze_bank = ref default_maze_bank
 let data_dir_prefix = "data" ^ Filename.dir_sep
 
 (** [trivia_questions_json] loads questions from trivia_questions.json file *)
@@ -413,18 +427,22 @@ let generate_encounters json =
   let all_encounters =
     json |> member "encounters" |> to_list |> List.map parse_encounters
   in
-  let arr = Array.of_list all_encounters in
-  let rec generator encounter_array i acc =
-    if i = 0 then acc
-    else
-      let i = Random.int (List.length all_encounters) in
-      let e = arr.(i) in
-      if e = ("rcs", "rcs", "rcs", "rcs") then generator encounter_array i acc
-      else (
-        arr.(i) <- ("rcs", "rcs", "rcs", "rcs");
-        generator encounter_array (i - 1) (e :: acc))
+  let selection =
+    match !maze_bank with
+    | [] ->
+        maze_bank := List.tl default_maze_bank;
+        List.hd default_maze_bank
+    | h :: t ->
+        maze_bank := t;
+        h
   in
-  generator arr 5 []
+  match selection with
+  | a, b, c ->
+      [
+        List.nth all_encounters a;
+        List.nth all_encounters b;
+        List.nth all_encounters c;
+      ]
 
 (** [iter_encounters encounters t] iterates through the generated [encounters]
     and prompts users to make choices *)
