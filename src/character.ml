@@ -5,6 +5,7 @@ type t = {
   hunger : int; (* current hunger level *)
   name : string;
   inventory : string list;
+  level : int * int;
 }
 
 let data_dir_prefix = "data" ^ Filename.dir_sep
@@ -19,7 +20,7 @@ let maze_encounters_json =
 
 (* [make_pet] makes a new pet with the given name *)
 let make_pet pet_name =
-  { balance = 0; hunger = 3; name = pet_name; inventory = [] }
+  { balance = 0; hunger = 3; name = pet_name; inventory = []; level = (0, 0) }
 
 (* [parse_questions j] finds necessary questions from the trivia_questions JSON
    file *)
@@ -63,6 +64,7 @@ let print_stats t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_endline
@@ -150,8 +152,29 @@ let lookup_one_question3 rand difficulty question_num =
         in
         0
 
-(** [lookup_one_question4 rand difficulty question_num] loads a random question
-    with random difficulty *)
+let death_exn t =
+  let new_tt =
+    {
+      balance = t.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+      level = t.level;
+    }
+  in
+  GameOver
+    ("=====================================================================\n\
+     \       \n\
+     \ GAME OVER: " ^ new_tt.name
+   ^ " has unfortunately died from starvation :( \n\
+     \ \n\
+     \ =====================================================================")
+
+let rec lookup k difficulty =
+  match difficulty with
+  | [] -> failwith "Oops!"
+  | (k', v) :: t -> if k = k' then v else lookup k t
+
 let lookup_one_question4 rand difficulty question_num =
   let v = lookup rand difficulty in
   match v with
@@ -225,6 +248,7 @@ let rec choose_difficulty t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_endline
@@ -242,6 +266,9 @@ let rec choose_difficulty t =
         hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
+        level =
+          (match t.level with
+          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
       }
   | 2 ->
       let bonus = lookup_five_questions medium * 2 in
@@ -250,6 +277,9 @@ let rec choose_difficulty t =
         hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
+        level =
+          (match t.level with
+          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
       }
   | 3 ->
       let bonus = lookup_five_questions hard * 3 in
@@ -258,6 +288,9 @@ let rec choose_difficulty t =
         hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
+        level =
+          (match t.level with
+          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
       }
   | _ ->
       choose_difficulty
@@ -266,9 +299,57 @@ let rec choose_difficulty t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
 
-(** [trivia_minigame t] initiates a new trivia minigame *)
+(* Generate a random number between 1 and 100 *)
+
+(* Prompt the user to guess a number *)
+let rec guess_number t secret =
+  print_endline "Guess a number between 1 and 100:";
+  try
+    let guess = read_int () in
+    if guess = secret then
+      let _ =
+        print_endline
+          "\nCONGRATS! You've guessed the correct number! Your reward is $1!"
+      in
+      {
+        balance = t.balance + 1;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
+    else if guess < secret then (
+      print_endline "Your guess is too low. Try again.";
+      guess_number
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+        secret)
+    else (
+      print_endline "Your guess is too high. Try again.";
+      guess_number
+        {
+          balance = t.balance;
+          hunger = t.hunger;
+          name = t.name;
+          inventory = t.inventory;
+        }
+        secret)
+  with _ ->
+    guess_number
+      {
+        balance = t.balance;
+        hunger = t.hunger;
+        name = t.name;
+        inventory = t.inventory;
+      }
+      secret
+
 let trivia_minigame t =
   let new_tt =
     {
@@ -276,6 +357,7 @@ let trivia_minigame t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_endline "\n";
@@ -289,6 +371,7 @@ let trivia_minigame t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
 
 (** [parse_encounters encounter] finds necessary encounters from the
@@ -330,6 +413,9 @@ let rec iter_encounters encounters t =
         hunger = t.hunger - 1;
         name = t.name;
         inventory = t.inventory;
+        level =
+          (match t.level with
+          | f, s -> if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
       }
   | h :: tail -> (
       match h with
@@ -354,6 +440,10 @@ let rec iter_encounters encounters t =
                   hunger = t.hunger - 1;
                   name = t.name;
                   inventory = t.inventory;
+                  level =
+                    (match t.level with
+                    | f, s ->
+                        if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
                 })
           | 1 ->
               if ans = 1 then (
@@ -370,6 +460,10 @@ let rec iter_encounters encounters t =
                   hunger = t.hunger - 1;
                   name = t.name;
                   inventory = t.inventory;
+                  level =
+                    (match t.level with
+                    | f, s ->
+                        if s < 900 then (f, s + 100) else (f + 1, s mod 1000));
                 })
           | _ -> failwith ""))
 
@@ -381,6 +475,7 @@ let start_maze t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   let encounters = generate_encounters maze_encounters_json in
@@ -390,6 +485,7 @@ let start_maze t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
 
 (** [maze_minigame t] starts a new maze minigame *)
@@ -400,6 +496,7 @@ let maze_minigame t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_endline "\n";
@@ -411,6 +508,7 @@ let maze_minigame t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
 
 (** [choose_minigame t] lets users choose from set of implemented minigames *)
@@ -420,8 +518,9 @@ let rec choose_minigame t =
     "Welcome to the minigame menu!\n\
      Here are your minigame options:\n\
      0: Main Menu\n\
-     1: Trivia\n\
-     2: Maze\n\
+     1: Trivia ($ - $$$)\n\
+     2: Maze ($)\n\
+     3: Number Guesser ($) \n\
      Please choose an option!";
 
   try
@@ -435,6 +534,7 @@ let rec choose_minigame t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           }
     | 2 ->
         maze_minigame
@@ -443,7 +543,18 @@ let rec choose_minigame t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           }
+    | 3 ->
+        let secret_number = Random.int 100 + 1 in
+        guess_number
+          {
+            balance = t.balance;
+            hunger = t.hunger;
+            name = t.name;
+            inventory = t.inventory;
+          }
+          secret_number
     | _ ->
         choose_minigame
           {
@@ -451,6 +562,7 @@ let rec choose_minigame t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           }
   with _ ->
     choose_minigame
@@ -459,6 +571,7 @@ let rec choose_minigame t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
 
 (* |||||||||||||||||||||||||||||STORE|||||||||||||||||||||||||||||||||||||||||*)
@@ -512,9 +625,17 @@ let rec food_item t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
-  print_stats new_tt;
+  print_stats
+    {
+      balance = new_tt.balance;
+      hunger = t.hunger;
+      name = t.name;
+      inventory = t.inventory;
+      level = t.level;
+    };
   print_endline
     "Welcome to the Grocery Store!\n\
      Here are your food options:\n\
@@ -528,6 +649,7 @@ let rec food_item t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   let x = read_int () in
@@ -538,6 +660,7 @@ let rec food_item t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
   | 1 ->
       let y = lookup_store 1 food_bank_find_cost in
@@ -557,6 +680,7 @@ let rec food_item t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           }
       else
         let new_t =
@@ -565,6 +689,7 @@ let rec food_item t =
             hunger = new_ttt.hunger;
             name = t.name;
             inventory = new_inv;
+            level = t.level;
           }
         in
         new_t
@@ -586,6 +711,7 @@ let rec food_item t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           }
       else
         let new_t =
@@ -594,6 +720,7 @@ let rec food_item t =
             hunger = t.hunger;
             name = t.name;
             inventory = new_inv;
+            level = t.level;
           }
         in
         new_t
@@ -604,6 +731,7 @@ let rec food_item t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
 
 (** [enumerate_inventory inv acc] prints out inventory with numbered items*)
@@ -657,6 +785,7 @@ let refill_hunger amt t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   let new_hunger = new_tt.hunger + amt in
@@ -671,6 +800,7 @@ let feed_item idx t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   let item = get_food_in_inventory idx new_tt.inventory 1 in
@@ -686,6 +816,7 @@ let feed_item idx t =
     hunger = new_hunger;
     name = t.name;
     inventory = new_inv;
+    level = t.level;
   }
 
 (** [home_item t] brings users to the home to feed their pet if they want *)
@@ -696,6 +827,7 @@ let rec home_item t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_endline
@@ -713,6 +845,7 @@ let rec home_item t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
   | i -> (
       try
@@ -723,6 +856,7 @@ let rec home_item t =
               hunger = t.hunger;
               name = t.name;
               inventory = t.inventory;
+              level = t.level;
             }
         in
         print_endline "\n*gulps* YUMMM!";
@@ -735,6 +869,7 @@ let rec home_item t =
             hunger = t.hunger;
             name = t.name;
             inventory = t.inventory;
+            level = t.level;
           })
 
 (** [choose_store t] lets users choose a store operation *)
@@ -745,6 +880,7 @@ let rec choose_store t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   let x = read_int () in
@@ -756,6 +892,7 @@ let rec choose_store t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
   | _ ->
       choose_store
@@ -764,6 +901,7 @@ let rec choose_store t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
 
 (** [choose_home_activity t] lets users choose a home operation *)
@@ -777,6 +915,7 @@ let rec choose_home_activity t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
   | _ ->
       choose_home_activity
@@ -785,6 +924,7 @@ let rec choose_home_activity t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
 
 (** [choose_home t] brings users home and displays corresponding operations *)
@@ -796,6 +936,7 @@ let rec choose_home t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_stats
@@ -804,6 +945,7 @@ let rec choose_home t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     };
   print_endline
     "Welcome to the home menu!\n\
@@ -817,6 +959,7 @@ let rec choose_home t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
   with _ ->
     choose_home
@@ -825,6 +968,7 @@ let rec choose_home t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
 
 (** [choice_of_store_item t] lets users choose what items they can use in the
@@ -837,6 +981,7 @@ let rec choice_of_store_item t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_stats new_tt;
@@ -852,6 +997,7 @@ let rec choice_of_store_item t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
   with _ ->
     choice_of_store_item
@@ -860,6 +1006,7 @@ let rec choice_of_store_item t =
         hunger = t.hunger;
         name = t.name;
         inventory = t.inventory;
+        level = t.level;
       }
 
 (* |||||||||||||||||||||||||||||OPTIONS|||||||||||||||||||||||||||||||||||||||*)
@@ -891,6 +1038,7 @@ let rec user_options t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   print_stats new_tt;
@@ -908,6 +1056,7 @@ let rec user_options t =
       hunger = t.hunger;
       name = t.name;
       inventory = t.inventory;
+      level = t.level;
     }
   in
   match read_int_opt () with
@@ -918,6 +1067,7 @@ let rec user_options t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
       in
       choice_of_store_item new_t
@@ -929,6 +1079,7 @@ let rec user_options t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
       in
       let z = choose_minigame new_t in
@@ -940,6 +1091,7 @@ let rec user_options t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
       in
       choose_home new_t
@@ -950,6 +1102,7 @@ let rec user_options t =
           hunger = t.hunger;
           name = t.name;
           inventory = t.inventory;
+          level = t.level;
         }
 
 (** [game_loop pet] continues the game for the [pet] until failure *)
@@ -961,6 +1114,7 @@ let rec game_loop pet =
       hunger = new_t.hunger;
       name = new_t.name;
       inventory = new_t.inventory;
+      level = new_t.level;
     }
 
 (** [intro ()] starts a game *)
