@@ -76,6 +76,15 @@ let store_tests =
         [ "Biscuit x2"; "Cake x2" ]
         (add_item_to_inventory "Cake x1"
            (add_item_to_inventory "Biscuit x1" [ "Biscuit x1"; "Cake x1" ])) );
+    ( "add test for add_item_to_inventory with a expanded inventory ,more \
+       times, sequentially works properly"
+    >:: fun _ ->
+      assert_equal
+        [ "Biscuit x2"; "Cake x3" ]
+        (add_item_to_inventory "Cake x1"
+           (add_item_to_inventory "Cake x1"
+              (add_item_to_inventory "Biscuit x1" [ "Biscuit x1"; "Cake x1" ])))
+    );
     ( "cannot add over 10 items to a list" >:: fun _ ->
       assert_raises (Failure "int_of_string") (fun () ->
           add_item_to_inventory "Biscuit"
@@ -185,6 +194,15 @@ let store_tests =
         [ "Biscuit x2"; "Cake x2" ]
         (if_not_in_inventory "Biscuit x1"
            (if_not_in_inventory "Cake x1" [ "Biscuit x1"; "Cake x1" ])) );
+    ( "add test for add_item_to_inventory with a expanded inventory ,more \
+       times, sequentially works properly"
+    >:: fun _ ->
+      assert_equal
+        [ "Biscuit x2"; "Cake x3" ]
+        (if_not_in_inventory "Cake x1"
+           (if_not_in_inventory "Cake x1"
+              (if_not_in_inventory "Biscuit x1" [ "Biscuit x1"; "Cake x1" ])))
+    );
     ( "enumerating an empty inventory returns an empty list" >:: fun _ ->
       assert_equal [] (enumerate_inventory [] 1) );
     ( "enumerating an inventory is printed properly" >:: fun _ ->
@@ -235,10 +253,8 @@ let store_tests =
            (deplete_food "Cake" [ "Cake, x1"; "Biscuit, x2" ])) );
   ]
 
-let maze_tests = []
-
 let suite =
   "test suite for CS 3110 Final Project"
-  >::: List.flatten [ trivia_tests; store_tests; maze_tests ]
+  >::: List.flatten [ trivia_tests; store_tests ]
 
 let _ = run_test_tt_main suite
