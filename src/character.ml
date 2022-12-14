@@ -78,9 +78,9 @@ let print_stats t =
     (new_tt.name ^ "'s Stats: Balance = $" ^ string_of_int t.balance
    ^ "; Hunger = " ^ string_of_int t.hunger ^ "/"
     ^ string_of_int get_max_hunger
-    ^ " Inventory = ["
+    ^ "; Inventory = ["
     ^ string_of_inventory t.inventory
-    ^ "] XP = " ^ string_of_int a ^ " " ^ string_of_int b ^ "/1000")
+    ^ "]; Level = " ^ string_of_int a ^ "; XP = " ^ string_of_int b ^ "/1000")
 
 let rec lookup k difficulty =
   match difficulty with
@@ -300,7 +300,7 @@ let rec guess_number t secret n_guesses_left =
     if guess = secret then
       let _ =
         print_endline
-          "\nCONGRATS! You've guessed the correct number! Your reward is $1!"
+          "\nCONGRATS! You've guessed the correct number! Your reward is $5!"
       in
       {
         balance = t.balance + 5;
@@ -309,7 +309,7 @@ let rec guess_number t secret n_guesses_left =
         inventory = t.inventory;
         level =
           (match t.level with
-          | f, s -> if s < 900 then (f, s + 200) else (f + 1, s mod 1000));
+          | f, s -> if s < 800 then (f, s + 200) else (f + 1, s mod 1000));
       }
     else if n_guesses_left = 0 then
       let _ =
@@ -421,7 +421,7 @@ let rec iter_encounters encounters t =
         inventory = t.inventory;
         level =
           (match t.level with
-          | f, s -> if s < 900 then (f, s + 200) else (f + 1, s mod 1000));
+          | f, s -> if s < 800 then (f, s + 200) else (f + 1, s mod 1000));
       }
   | h :: tail -> (
       match h with
